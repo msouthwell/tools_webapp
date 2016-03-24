@@ -1,0 +1,6 @@
+-- CREATE TABLE steps(
+         -- id INTEGER PRIMARY KEY AUTOINCREMENT ,
+         -- username TEXT,
+         -- retrieveTime TEXT,
+         -- stepsTaken INTEGER
+-- );

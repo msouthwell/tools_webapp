@@ -1,0 +1,4 @@
+applications:
+- name: handyman-tools
+  mem: 256M
+  instances: 1
