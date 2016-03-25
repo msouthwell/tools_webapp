@@ -1,5 +1,4 @@
 bottle<1
 requests
 schedule
-bottle-mysql
-mysqlclient
+PyMySQL3

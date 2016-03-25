@@ -5,15 +5,9 @@ This script runs the application using a development server.
 import bottle
 import os
 import sys
-import bottle_mysql
 
 # controllers package contains all the HTTP handlers for our server and must be imported.
 from controllers import *
-
-app = bottle.Bottle()
-plugin = bottle_mysql.Plugin(dbuser='admin', dbpass='changeme', dbname='test')
-app.install(plugin)
-
 
 if '--debug' in sys.argv[1:] or 'SERVER_DEBUG' in os.environ:
     # Debug mode will enable more verbose output in the console window.

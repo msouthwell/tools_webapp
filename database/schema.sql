@@ -1,4 +1,4 @@
-CREATE  TABLE  CLERKS (
+CREATE  TABLE  clerks (
    id          INT          NOT    NULL,
    login       VARCHAR(16)  NOT    NULL,
    first_name  VARCHAR(45)  NOT    NULL,

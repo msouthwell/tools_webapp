@@ -1,6 +1,5 @@
 from bottle import route, view, request, response
 from datetime import datetime
-import bottle_mysql
 
 @route('/login')
 @view('login')
