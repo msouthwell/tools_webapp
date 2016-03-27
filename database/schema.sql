@@ -14,9 +14,9 @@ CREATE TABLE IF NOT EXISTS customers(
     last_name VARCHAR(45) NOT NULL,
     password VARCHAR(32) NOT NULL,
     address TEXT(500),
-    Work_phone_cc VARCHAR(4) NOT NULL,
-    Work_phone_number VARCHAR(255) NOT NULL,
+    work_phone_cc VARCHAR(4) NOT NULL,
+    work_phone_number VARCHAR(255) NOT NULL,
     home_phone_cc VARCHAR(4) NOT NULL,
-    Home_phone_number VARCHAR(255) NOT NULL,
+    home_phone_number VARCHAR(255) NOT NULL,
     PRIMARY KEY(id),
     UNIQUE(email));
