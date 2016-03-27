@@ -1,12 +1,6 @@
 #!/bin/bash
 
-# MySQL root/admin username and password
-sys_user="root"
-
-# The handyman database name, user, and password to use
-db_name="handyman"
-db_user="handy_user"
-db_pass="handy_pass"
+source mysql.handyman.cfg
 
 # Check for existence, create if it does not exist
 echo "Checking if $db_name exists..."
