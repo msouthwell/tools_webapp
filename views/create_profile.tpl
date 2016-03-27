@@ -3,8 +3,9 @@
 % rebase('layout.tpl', title="New Customer")
 <div class="container">
     <h2>Customer Details</h2>
-    <hr />
-    <form class="form-horizontal" role="form" action="/create_profile" method="GET">
+    <h4>{{message}}</h4>
+    <hr/>
+    <form class="form-horizontal" role="form" action="/create_profile" method="post">
         <div class="form-group">
             <label for="email" class="control-label col-sm-4">Email<em>*</em></label>
             <div class="col-sm-8">
