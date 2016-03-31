@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS categories(
     category            VARCHAR(255)    NOT NULL,
     has_accessories     BOOLEAN         NOT NULL,
     PRIMARY KEY (id), 
-UNIQUE (category) );
+    UNIQUE (category) );
 
 CREATE TABLE IF NOT EXISTS tools( 
     id                  INT             NOT NULL,
@@ -52,20 +52,20 @@ CREATE TABLE IF NOT EXISTS tools(
     original_price      DECIMAL(5,2)    NOT NULL,
     category_id         INT             NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (category_id)           REFERENCES CATEGORIES (id) );
+    FOREIGN KEY (category_id)           REFERENCES categories (id) );
 
 CREATE TABLE IF NOT EXISTS tool_accessories(
     tool_id             INT             NOT NULL,
     description         VARCHAR(255)    NOT NULL,
     PRIMARY KEY (tool_id, description),
-    FOREIGN KEY (tool_id)               REFERENCES TOOLS (id) );
+    FOREIGN KEY (tool_id)               REFERENCES tools (id) );
 
 CREATE TABLE IF NOT EXISTS reservations_tools(
     reservation_id      INT             NOT NULL,
     tool_id             INT             NOT NULL,
     PRIMARY KEY (reservation_id, tool_id),
-    FOREIGN KEY (reservation_id)        REFERENCES RESERVATIONS (id),
-    FOREIGN KEY (tool_id)               REFERENCES TOOLS (id) );
+    FOREIGN KEY (reservation_id)        REFERENCES reservations (id),
+    FOREIGN KEY (tool_id)               REFERENCES tools (id) );
 
 CREATE TABLE IF NOT EXISTS service_orders(
     id                  INT             NOT NULL,
@@ -75,15 +75,15 @@ CREATE TABLE IF NOT EXISTS service_orders(
     end_date            DATE,
     est_cost            DECIMAL(5,2),
     PRIMARY KEY (id),
-    FOREIGN KEY (clerk_id)              REFERENCES CLERKS (id),
-    FOREIGN KEY (tool_id)               REFERENCES TOOLS (id) );
+    FOREIGN KEY (clerk_id)              REFERENCES clerks (id),
+    FOREIGN KEY (tool_id)               REFERENCES tools (id) );
 
 CREATE TABLE IF NOT EXISTS sells(
     tool_id             INT             NOT NULL,
     clerk_id            INT             NOT NULL,
     sale_date           DATE            NOT NULL,
     PRIMARY KEY (tool_id),
-    FOREIGN KEY (clerk_id)              REFERENCES CLERKS (id),
-    FOREIGN KEY (tool_id)               REFERENCES TOOLS (id) );
+    FOREIGN KEY (clerk_id)              REFERENCES clerks (id),
+    FOREIGN KEY (tool_id)               REFERENCES tools (id) );
 
 

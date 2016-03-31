@@ -1,13 +1,24 @@
-﻿from bottle import route, view, request, response
+from bottle import route, view, request, response
 from datetime import datetime
 import pymysql.cursors
 
-connection = pymysql.connect(host='localhost',
-                             db='test',
-                             user='root',
-                             charset='utf8',
-                             cursorclass=pymysql.cursors.DictCursor)
+import os
+import json
 
+# Specify config in database.json or editing 'database' variable below
+db_config_file = os.path.join(os.path.dirname(__file__), "database.json")
+
+if os.path.exists(db_config_file):
+    with open(db_config_file) as f:
+        database = json.load(f)
+else:
+        database = [ {"host":"localhost", "db":"test", "user":"root", "passwd":""}]
+
+# Establish Databse Connection
+connection = []
+for param in database:
+    connection.append(pymysql.connect(**param))
+    
 cursor = connection.cursor()
 
 

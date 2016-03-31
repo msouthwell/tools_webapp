@@ -1,8 +1,14 @@
 #!/bin/bash
 
+echo "Sourcing config file...."
 source mysql.handyman.cfg
 
+echo "Creating database (if necessary)..."
+$(mysql -u${sys_user} -p -e "CREATE DATABASE IF NOT EXISTS ${db_name};")
+
+echo "Creating schema..."
 $(mysql -u${sys_user} -p ${db_name} < schema.sql)
+
 
 if [ $? -eq 0 ]; then
     echo "${db_name} schema created"
