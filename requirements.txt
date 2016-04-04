@@ -1,4 +1,4 @@
-bottle<1
-requests
-schedule
-PyMySQL3
+bottle==0.12.9
+PyMySQL3==0.5
+requests==2.9.1
+schedule==0.3.2

@@ -5,6 +5,11 @@ import pymysql.cursors
 import os
 import json
 
+connection = pymysql.connect(host='localhost',
+                             db='handymandb',
+                             charset='utf8',
+                             cursorclass=pymysql.cursors.DictCursor)
+
 # Specify config in database.json or editing 'database' variable below
 db_config_file = os.path.join(os.path.dirname(__file__), "database.json")
 
@@ -18,7 +23,7 @@ else:
 connection = []
 for param in database:
     connection.append(pymysql.connect(**param))
-    
+
 cursor = connection.cursor()
 
 

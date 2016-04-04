@@ -17,6 +17,7 @@ venv/
 
  #Byte-compiled / optimized / DLL files
 *.pyc
+**/*/__pycache__
 
  # C extensions
  *.so
