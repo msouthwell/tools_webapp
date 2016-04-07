@@ -1,6 +1,8 @@
-from bottle import route, view, template, request, response
+from bottle import route, view, template, request, response, redirect
 import pymysql.cursors
 import pymysql.err
+import os
+import json
 
 
 @route('/create_profile', method=['GET','POST'])
@@ -19,9 +21,19 @@ def new_profile():
         home_phone_number = request.forms.get('home_phone_number', '').strip()
 
         try:
-            connection = pymysql.connect(host='localhost',
-                                         db='test',
-                                         user='root',
+            # Specify config in database.json or editing 'database' variable below
+            db_config_file = os.path.join(os.path.dirname(__file__), "database.json")
+
+            if os.path.exists(db_config_file):
+                with open(db_config_file) as f:
+                    database = json.load(f)
+            else:
+                    database = [ {"host":"localhost", "db":"test", "user":"root", "passwd":""}]
+
+            connection = pymysql.connect(host=database[0]['host'],
+                                         user=database[0]['user'],
+                                         passwd=database[0]['passwd'],
+                                         db=database[0]['db'],
                                          charset='utf8',
                                          cursorclass=pymysql.cursors.DictCursor)
 
@@ -39,7 +51,7 @@ def new_profile():
             return template('login.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
         else:
             c.close()
-            return template('view_profile.tpl', message='New customer profile created.', cust_id=cust_id)
-
+            #return template('view_profile.tpl', message='New customer profile created.', cust_id=cust_id)
+            redirect("/view_profile/%s" % cust_id)
     else:
         return template('create_profile.tpl', message='')
