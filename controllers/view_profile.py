@@ -28,7 +28,7 @@ def view_profile(cust_id):
 
         c = connection.cursor()
 
-        sql = "SELECT * FROM CUSTOMERS WHERE customer_id = %s"
+        sql = "SELECT * FROM customers WHERE customer_id = %s"
 
         c.execute(sql,cust_id)
         data = c.fetchone()
