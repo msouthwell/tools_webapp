@@ -33,9 +33,9 @@ def login():
 
             c = connection.cursor()
             if user_type == "clerks":
-                sql = "SELECT login, password FROM clerks WHERE login=%s"
+                sql = "SELECT clerk_id, login, password FROM clerks WHERE login=%s"
             elif user_type == "customers":
-                sql = "SELECT email, password FROM customers WHERE email=%s"
+                sql = "SELECT customer_id, email, password FROM customers WHERE email=%s"
             c.execute(sql, login)  # login or email
 
             result = c.fetchone()
@@ -51,8 +51,10 @@ def login():
 
         if password == result['password']:
             if user_type == "clerks":
+                response.set_cookie("clerk_id", str(result['clerk_id']))
                 redirect('/clerk_main_menu')
             elif user_type == "customers":
+                response.set_cookie("customer_id", str(result['customer_id']))
                 redirect('/customer_main_menu')
         else:
             return template('login.tpl', message='Email or password incorrect')
