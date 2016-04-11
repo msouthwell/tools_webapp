@@ -5,10 +5,16 @@ import os
 import json
 
 
-@route('/view_profile/<cust_id>')
+@route('/view_profile')
 @view('view_profile')
-def view_profile(cust_id):
+def view_session_profile():
+    customer_id = int(request.get_cookie('customer_id'))
+    print("Found a customer: " + str(customer_id))
+    return view_profile(customer_id)
 
+@route('/view_profile/<customer_id>')
+@view('view_profile')
+def view_profile(customer_id):
     try:
         # Specify config in database.json or editing 'database' variable below
         db_config_file = os.path.join(os.path.dirname(__file__), "database.json")
@@ -30,7 +36,7 @@ def view_profile(cust_id):
 
         sql = "SELECT * FROM customers WHERE customer_id = %s"
 
-        c.execute(sql,cust_id)
+        c.execute(sql,customer_id)
         data = c.fetchone()
         c.close()
     except pymysql.err.Error as e:
