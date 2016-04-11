@@ -17,7 +17,12 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="/" class="navbar-brand">Handyman Tools</a>
+                <a href="/about" class="navbar-brand">Handyman Tools</a>
+            </div>
+            <div class="nav navbar-nav pull-right">
+              <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+              </li>
             </div>
         </div>
     </div>
