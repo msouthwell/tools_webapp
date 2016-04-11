@@ -33,13 +33,12 @@ def login():
 
             c = connection.cursor()
             if user_type == "clerks":
-                sql = "SELECT email, password FROM clerks WHERE 'login'=%s"
+                sql = "SELECT login, password FROM clerks WHERE login=%s"
             elif user_type == "customers":
-                sql = "SELECT email, password FROM customers WHERE 'email'=%s"
+                sql = "SELECT email, password FROM customers WHERE email=%s"
             c.execute(sql, login)  # login or email
 
             result = c.fetchone()
-            print(result)
 
             if result is None:
                 return template('login.tpl', message='Email or password incorrect')
@@ -49,11 +48,11 @@ def login():
 
         except pymysql.err.Error as e:
             return template('login.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
-        print('Password: %s', result.password)
 
-        if password != result['password']:
-            return template('login.tpl', message='Email or password incorrect')
+        if password == result['password']:
+            redirect('/about') # TODO change this to main menu once created
         else:
-            redirect('/about/')
+            return template('login.tpl', message='Email or password incorrect')
+
     else:
         return template('login.tpl', message='Enter email and password')

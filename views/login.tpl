@@ -6,7 +6,7 @@
   <h4>{{message}}</h4>
   <form class="form-horizontal" role="form" action="/login" method="post">
       <div class="form-group">
-        <label for="email" class="control-label">Login<em>*</em></label>
+        <label for="login" class="control-label">Login<em>*</em></label>
         <input class="form-control" maxlength="255" name="login" autofocus required>
       </div>
       <div class="form-group">
