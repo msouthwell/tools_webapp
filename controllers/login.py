@@ -43,14 +43,17 @@ def login():
             if result is None:
                 return template('login.tpl', message='Email or password incorrect')
 
-            connection.commit()
+            connection.commit() # why commit?
             c.close()
 
         except pymysql.err.Error as e:
             return template('login.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
 
         if password == result['password']:
-            redirect('/about') # TODO change this to main menu once created
+            if user_type == "clerks":
+                redirect('/clerk_main_menu')
+            elif user_type == "customers":
+                redirect('/customer_main_menu')
         else:
             return template('login.tpl', message='Email or password incorrect')
 
