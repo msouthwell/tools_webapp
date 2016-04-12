@@ -5,6 +5,8 @@
     <h2>Customer Details</h2>
     <h4>{{message}}</h4>
     <hr/>
+
+    </script>
     <form class="form-horizontal" role="form" action="/create_profile" method="post">
         <div class="form-group">
             <label for="email" class="control-label col-sm-4">Email<em>*</em></label>
@@ -25,9 +27,15 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="password" class="control-label col-sm-4">Password<em>*</em></label>
+            <label for="password1" class="control-label col-sm-4">Password<em>*</em></label>
             <div class="col-sm-8">
-                <input type="password" class="form-control" maxlength="32" name="password" required>
+                <input type="password" class="form-control" maxlength="32" name="password1" id="password1" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password2" class="control-label col-sm-4">Confirm Password<em>*</em></label>
+            <div class="col-sm-8">
+                <input type="password" class="form-control" maxlength="32" name="password2" id="password2" required>
             </div>
         </div>
         <div class="form-group">
@@ -67,3 +75,19 @@
         </div>
     </form>
 </div>
+<script type="text/javascript">
+    window.onload = function() {
+        document.getElementById("password1").onchange = validatePassword;
+        document.getElementById("password2").onchange = validatePassword;
+    }
+
+    function validatePassword() {
+        var pass2 = document.getElementById("password2").value;
+        var pass1 = document.getElementById("password1").value;
+        if (pass1 != pass2)
+            document.getElementById("password2").setCustomValidity("Passwords Don't Match");
+        else
+            document.getElementById("password2").setCustomValidity('');
+        //empty string means no validation error
+    }
+</script>
