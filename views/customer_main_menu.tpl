@@ -11,7 +11,7 @@
   </div>
 
   <div class="col-sm-offset-4 col-sm-8">
-    <form class="form-horizontal" role="form" action="/check_tool_availability" method="get">
+    <form class="form-horizontal" role="form" action="/check_available_tools" method="get">
       <input class="form-control btn btn-primary" type="submit" name="Check Tool Availability" value="Check Tool Availability"/>
     </form>
   </div>
