@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
     <script src="/static/scripts/modernizr-2.6.2.js"></script>
     <script src="/static/js/jquery-1.12.3.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.js"></script>
 </head>
 
 <body>
