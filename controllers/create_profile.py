@@ -1,8 +1,7 @@
 from bottle import route, view, template, request, response, redirect
 import pymysql.cursors
 import pymysql.err
-import os
-import json
+from database import dbapi
 
 
 @route('/create_profile', method=['GET','POST'])
@@ -21,28 +20,16 @@ def new_profile():
         home_phone_number = request.forms.get('home_phone_number', '').strip()
 
         try:
-            # Specify config in database.json or editing 'database' variable below
-            db_config_file = os.path.join(os.path.dirname(__file__), "database.json")
-
-            if os.path.exists(db_config_file):
-                with open(db_config_file) as f:
-                    database = json.load(f)
-            else:
-                    database = [ {"host":"localhost", "db":"test", "user":"root", "passwd":""}]
-
-            connection = pymysql.connect(host=database[0]['host'],
-                                         user=database[0]['user'],
-                                         passwd=database[0]['passwd'],
-                                         db=database[0]['db'],
-                                         charset='utf8',
-                                         cursorclass=pymysql.cursors.DictCursor)
+            connection = dbapi.connect()  # return db connection
+            if connection == -1:
+                return template('login.tpl')
 
             c = connection.cursor()
 
             sql = "INSERT INTO customers(email, first_name, last_name, password, address, work_phone_cc, work_phone_number, home_phone_cc, home_phone_number) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
 
             c.execute(sql,(email, first_name, last_name, password, address, work_phone_cc, work_phone_number, home_phone_cc, home_phone_number))
-            cust_id = c.lastrowid
+            customer_id = c.lastrowid
             connection.commit()
 
         except pymysql.err.IntegrityError:
@@ -51,7 +38,7 @@ def new_profile():
             return template('login.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
         else:
             c.close()
-            #return template('view_profile.tpl', message='New customer profile created.', cust_id=cust_id)
-            redirect("/view_profile/%s" % cust_id)
+            response.set_cookie("customer_id", str(customer_id))
+            redirect('/customer_main_menu')
     else:
         return template('create_profile.tpl', message='')
