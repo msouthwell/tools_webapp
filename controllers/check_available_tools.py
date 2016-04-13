@@ -5,7 +5,7 @@ from database import dbapi
 
 @route('/check_available_tools', method=['GET'])
 @view('check_available_tools')
-def check_avilable_tools_get():
+def view_check_avilable_tools():
     # Not sure if this is even needed
     pass
 

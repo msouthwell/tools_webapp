@@ -3,57 +3,57 @@ import pymysql.cursors
 import pymysql.err
 import os
 import json
+from database import dbapi
 
 
-@route('/create_tool', method=['GET','POST'])
+@route('/create_tool', method=['GET'])
 @view('create_tool')
-def new_profile():
+def view_create_tool():
+    try:
+        connection = dbapi.connect()  # return db connection
+        if connection == -1:
+            return template('error.tpl', message='Database connection issue.')
 
-    if request.forms.get('Submit', '').strip():
+        c = connection.cursor()
 
-        short_description = request.forms.get('short_description', '').strip()
-        full_description = request.forms.get('full_description', '').strip()
-        deposit = request.forms.get('deposit', '').strip()
-        day_price = request.forms.get('day_price', '').strip()
-        original_price = request.forms.get('original_price', '').strip()
-        category_id = request.forms.get('category_id', '').strip()
-
-        try:
-            # Specify config in database.json or editing 'database' variable below
-            db_config_file = os.path.join(os.path.dirname(__file__), "database.json")
-
-            if os.path.exists(db_config_file):
-                with open(db_config_file) as f:
-                    database = json.load(f)
-            else:
-                    database = [ {"host":"localhost", "db":"test", "user":"root", "passwd":""}]
-
-            connection = pymysql.connect(host=database[0]['host'],
-                                         user=database[0]['user'],
-                                         passwd=database[0]['passwd'],
-                                         db=database[0]['db'],
-                                         charset='utf8',
-                                         cursorclass=pymysql.cursors.DictCursor)
-
-            c = connection.cursor()
-
-            # Populate for category drop-down
-            c.execute("SELECT * FROM categories;") 
-            rows = c.fetchall()
-
-            sql = "INSERT INTO tools(short_description, full_description, deposit, day_price, original_price, category_id) VALUES (%s, %s, %s, %s, %s, %s)"
-
-            c.execute(sql,(short_description, full_description, deposit, day_price, original_price, category_id))
-            tool_id = c.lastrowid
-            connection.commit()
-
-        except pymysql.err.IntegrityError:
-            return template('create_tool.tpl', message="The tool already exists.")
-        except pymysql.err.Error as e:
-            return template('login.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
-        else:
-            c.close()
-            #return template('view_profile.tpl', message='New customer profile created.', cust_id=cust_id)
-            redirect("/view_tool/%s" % tool_id)
+        # Populate for category drop-down
+        c.execute("SELECT * FROM categories") 
+        categories = c.fetchall()
+    except pymysql.err.Error as e:
+        return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
     else:
-        return template('create_tool.tpl', message='')
+        c.close()
+        return {'categories':categories,'message':''}
+
+ 
+@route('/create_tool', method=['POST'])
+@view('create_tool')
+def create_tool():
+    short_description = request.forms.get('short_description', '').strip()
+    full_description = request.forms.get('full_description', '').strip()
+    deposit = request.forms.get('deposit', '').strip()
+    day_price = request.forms.get('day_price', '').strip()
+    original_price = request.forms.get('original_price', '').strip()
+    category_id = request.forms.get('category_id', '').strip()
+
+    try:
+        connection = dbapi.connect()  # return db connection
+        if connection == -1:
+            return template('error.tpl', message='Database connection issue.')
+
+        c = connection.cursor()
+
+        sql = "INSERT INTO tools(short_description, full_description, deposit, day_price, original_price, category_id) VALUES (%s, %s, %s, %s, %s, %s)"
+
+        c.execute(sql,(short_description, full_description, deposit, day_price, original_price, category_id))
+        tool_id = c.lastrowid
+        connection.commit()
+
+    except pymysql.err.IntegrityError:
+        return template('create_tool.tpl', message="The tool already exists.")
+    except pymysql.err.Error as e:
+        return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
+    else:
+        c.close()
+        #return template('view_profile.tpl', message='New customer profile created.', cust_id=cust_id)
+        redirect("/view_tool/%s" % tool_id)
