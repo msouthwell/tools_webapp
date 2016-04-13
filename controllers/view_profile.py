@@ -1,8 +1,6 @@
-from bottle import route, view, template, request, response
+from bottle import route, view, template, request
 import pymysql.cursors
-import pymysql.err
-import os
-import json
+from database import dbapi
 
 
 @route('/view_profile')
@@ -12,35 +10,23 @@ def view_session_profile():
     print("Found a customer: " + str(customer_id))
     return view_profile(customer_id)
 
+
 @route('/view_profile/<customer_id>')
 @view('view_profile')
 def view_profile(customer_id):
-    try:
-        # Specify config in database.json or editing 'database' variable below
-        db_config_file = os.path.join(os.path.dirname(__file__), "database.json")
+    connection = dbapi.connect()  # return db connection
+    if connection == -1:
+        return template('login.tpl')
 
-        if os.path.exists(db_config_file):
-            with open(db_config_file) as f:
-                database = json.load(f)
-        else:
-            database = [ {"host":"localhost", "db":"test", "user":"root", "passwd":""}]
+    c = connection.cursor()
 
-        connection = pymysql.connect(host=database[0]['host'],
-                                     user=database[0]['user'],
-                                     passwd=database[0]['passwd'],
-                                     db=database[0]['db'],
-                                     charset='utf8',
-                                     cursorclass=pymysql.cursors.DictCursor)
+    # TODO sql needs a lot of work. Need to lookup tool information and clerk inforamtion
+    sql = "SELECT * FROM customers x, reservations WHERE x.customer_id = %s"
 
-        c = connection.cursor()
+    c.execute(sql, customer_id)
+    data = c.fetchone()
+    print(data)
+    c.close()
 
-        sql = "SELECT * FROM customers WHERE customer_id = %s"
-
-        c.execute(sql,customer_id)
-        data = c.fetchone()
-        c.close()
-    except pymysql.err.Error as e:
-        return template('login.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
-    else:
-        data['message']=''  # Template expects a message.  Used for debugging or informing the user of something without altering the template
-        return data
+    data['message'] = ''  # Template expects a message.  Used for debugging or informing the user of something without altering the template
+    return data
