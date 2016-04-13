@@ -28,4 +28,12 @@
       </tbody>
     </table>
   </div>
+  <hr>
+  <form class="form-vertical" role="form" action="/view_tool" method="post">
+    <div class="form-group">
+      <label for="tool_id" class="control-label">Part #<em>*</em></label>
+      <input class="form-control" maxlength="255" name="tool_id" required>
+    </div>
+    <input class="form-control btn btn-primary" type="submit" name="View Details" value="View Details"/>
+  </form>
 </div>

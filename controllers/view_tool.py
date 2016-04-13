@@ -1,14 +1,18 @@
 from bottle import route, view, template, request, response
 import pymysql.cursors
 import pymysql.err
-import os
-import json
 from database import dbapi
 
 
+@route('/view_tool', method=['POST'])
+@view('view_tool')
+def view_tool_post():
+    tool_id = request.forms.get('tool_id', '').strip()
+    return view_tool(tool_id)
+    
 @route('/view_tool/<tool_id>')
 @view('view_tool')
-def view_profile(tool_id):
+def view_tool(tool_id):
     try:
         connection = dbapi.connect()  # return db connection
         if connection == -1:
