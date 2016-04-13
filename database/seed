@@ -59,8 +59,11 @@ INSERT INTO tool_accessories (tool_id, description)
 VALUES(5, "Extra blades");
 
 # Reservations
-INERT INTO reservations (start_date, end_date, customer_id, clerk_id_pickup, credit_card)
-VALUES ('2012-01-01', '2012-01-06' ,1, 1, 12345732);
+INSERT INTO reservations (start_date, end_date, customer_id, clerk_id_pickup, credit_card)
+VALUES ('2012-01-01', '2012-01-06', 1, 1, 12345732);
+
+INSERT INTO reservations (start_date, end_date, customer_id, clerk_id_pickup, clerk_id_dropoff) 
+VALUES ('2013-02-08', '2013-04-08', 1, 1, 2);
 
 # Reservation Tools
 INSERT INTO reservations_tools (reservation_id, tool_id)

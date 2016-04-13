@@ -58,25 +58,12 @@
             </thead>
             <tr>
                 <td>{{reservation_id}}</td>
-            </tr>
-            <tr>
                 <td>{{short_description}}</td>
-            </tr>
-            <tr>
                 <td>{{start_date}}</td>
-            </tr>
-            <tr>
                 <td>{{end_date}}</td>
-            </tr>
-            <tr>
-              <!-- What is the price? Day Price or a calculation? -->
-                <td>Rental Price:</td>
-
-            </tr>
-            <tr>
+                <!-- What is the price? Day Price or a calculation? -->
+                <td>Rental Price?</td>
                 <td>{{p_name}}</td>
-            </tr>
-            <tr>
                 <td>{{d_name}}</td>
             </tr>
         </table>

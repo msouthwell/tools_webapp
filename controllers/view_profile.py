@@ -20,18 +20,19 @@ def view_profile(customer_id):
 
     c = connection.cursor()
 
-    sql = "SELECT c.*, r.*, t.*, \
+    sql = "SELECT c.*, r.*, rt.*, t.*, \
           (SELECT CONCAT (first_name, ' ', last_name) FROM clerks WHERE clerk_id = r.clerk_id_dropoff) AS d_name, \
           (SELECT CONCAT(first_name, ' ', last_name) FROM clerks WHERE clerk_id = r.clerk_id_pickup) AS p_name \
           FROM customers c \
           JOIN reservations r ON (c.customer_id = r.customer_id) \
           JOIN reservations_tools rt ON (r.reservation_id = rt.reservation_id) \
-          JOIN tools t ON t.tool_id = (rt.tool_id = t.tool_id) \
+          JOIN tools t ON (t.tool_id = rt.tool_id) \
           WHERE c.customer_id = %s"
 
     c.execute(sql, customer_id)
-    data = c.fetchone()
+    data = c.fetchall()
     print(data)
+    print(type(data))
     c.close()
 
     data['message'] = ''  # Template expects a message.  Used for debugging or informing the user of something without altering the template
