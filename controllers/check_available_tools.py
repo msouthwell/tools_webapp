@@ -10,7 +10,7 @@ def check_avilable_tools_get():
     pass
 
 @route('/check_available_tools', method=['POST'])
-@view('check_available_tools')
+@view('available_tools')
 def check_avilable_tools_post():
     category = request.forms.get('category', '1').strip()
     print("category: " + str(category))
@@ -29,12 +29,11 @@ def check_avilable_tools_post():
               "(SELECT * FROM reservations AS r JOIN reservations_tools AS rt ON r.reservation_id = rt.reservation_id WHERE t.tool_id = rt.tool_id AND r.start_date <= %s AND r.end_date >= %s) "+
               "AND NOT EXISTS(SELECT * FROM sells AS s WHERE t.tool_id = s.tool_id)", (category, end_date, start_date))
 
-#c.execute("SELECT * FROM foo WHERE bar = %s AND baz = %s", (param1, param2))
-    results = c.fetchall()
+    rows = c.fetchall()
 
-    for row in results:
+    for row in rows:
         print("row: " + str(row))
 
     c.close()
 
-    return template('available_tools', rows=results)
+    return {'rows':rows}
