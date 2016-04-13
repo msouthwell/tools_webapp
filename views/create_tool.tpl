@@ -40,8 +40,8 @@
             <label for="category_id" class="control-label col-sm-4">Category<em>*</em></label>
             <div class="col-sm-8">
                 <select type="password" class="form-control" maxlength="32" name="category_id" required>
-                %for row in rows:
-                    <option value="{{row}}">{{row}}</option>
+                %for category in categories:
+                    <option value="{{category['category_id']}}">{{category['category']}}</option>
                 %end
                 </select>
             </div>
