@@ -9,10 +9,8 @@ $(mysql -u${sys_user} -p ${db_name} <<EOF
 INSERT INTO clerks (login, first_name, last_name, password)
 VALUES ("arta", "Art", "Anderson", "arta");
 
-
 INSERT INTO clerks (login, first_name, last_name, password)
 VALUES ("bobb", "Bob", "Baker", "bobb");
-
 
 INSERT INTO clerks (login, first_name, last_name, password)
 VALUES ("cabc", "Cab", "Calloway", "cabc");
@@ -60,9 +58,13 @@ VALUES(5, "Mitre box");
 INSERT INTO tool_accessories (tool_id, description)
 VALUES(5, "Extra blades");
 
-#reservations
+# Reservations
 INERT INTO reservations (start_date, end_date, customer_id, clerk_id_pickup, credit_card)
 VALUES ('2012-01-01', '2012-01-06' ,1, 1, 12345732);
+
+# Reservation Tools
+INSERT INTO reservations_tools (reservation_id, tool_id)
+VALUES (1, 1);
 
 # ### END SEED
 

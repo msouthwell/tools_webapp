@@ -45,34 +45,39 @@
     <h3>Reservations</h3>
     <div class="table-responsive">
         <table class="table">
+            <thead>
+              <tr>
+                <th>Reservation Number</th>
+                <th>Tools</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Rental Price</th>
+                <th>Pick Up Clerk</th>
+                <th>Drop Off Clerk</th>
+              </tr>
+            </thead>
             <tr>
-                <td>Reservation Number:</td>
                 <td>{{reservation_id}}</td>
             </tr>
             <tr>
-                <td>Tool:</td>
-                <td>{{category}}</td>
+                <td>{{short_description}}</td>
             </tr>
             <tr>
-                <td>Start Date:</td>
                 <td>{{start_date}}</td>
             </tr>
             <tr>
-                <td>End Date:</td>
                 <td>{{end_date}}</td>
             </tr>
             <tr>
               <!-- What is the price? Day Price or a calculation? -->
                 <td>Rental Price:</td>
-                <td>{{day_price}}</td>
+
             </tr>
             <tr>
-                <td>Pickup Clerk:</td>
-                <td>{{pickup_clerk}}</td>
+                <td>{{p_name}}</td>
             </tr>
             <tr>
-                <td>Dropoff Clerk:</td>
-                <td>{{dropoff_clerk}}</td>
+                <td>{{d_name}}</td>
             </tr>
         </table>
     </div>
