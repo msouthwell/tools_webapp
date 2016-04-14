@@ -9,20 +9,12 @@ from database import dbapi
 @view('check_available_tools')
 def view_check_avilable_tools():
     try:
-        connection = dbapi.connect()  # return db connection
-        if connection == -1:
-            return template('error.tpl', message='Database connection issue.')
-
-        c = connection.cursor()
-
-        # Populate for category drop-down
-        c.execute("SELECT * FROM categories ORDER BY category_id") 
-        categories = c.fetchall()
+        categories = dbapi.get_categories()
+        print("categories: " + str(categories))
     except pymysql.err.Error as e:
         return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
-    else:
-        c.close()
-        return {'categories':categories,'message':''}
+
+    return {'categories':categories,'message':''}
 
 @route('/check_available_tools', method=['POST'])
 @view('available_tools')
