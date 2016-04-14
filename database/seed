@@ -45,7 +45,7 @@ INSERT INTO tools (short_description, full_description, deposit, day_price, orig
 VALUES("Claw Hammer", "A hammer with a claw", 1.00, 1.25, 1.25, 1);
 
 INSERT INTO tools (short_description, full_description, deposit, day_price, original_price, category_id)
-VALUES("Jackhammer", "Gas powered and big", 100.00, 100.00, 1000.00, 2);
+VALUES("Jackhammer", "Gas powered and big", 101.00, 100.00, 1000.00, 2);
 
 INSERT INTO tools (short_description, full_description, deposit, day_price, original_price, category_id)
 VALUES("Planer", "Planes wood", 5.00, 50.00, 500.00, 3);
@@ -59,6 +59,45 @@ VALUES(5, "Mitre box");
 
 INSERT INTO tool_accessories (tool_id, description)
 VALUES(5, "Extra blades");
+
+# RESERVATIONS
+# Completed
+INSERT INTO reservations (start_date, end_date, customer_id, clerk_id_pickup, clerk_id_dropoff, credit_card, expiration_date)
+VALUES ('2016-01-01', '2016-01-10', 1, 1, 1, "VISA123", '2017-01-01');
+
+# Started, not completed
+INSERT INTO reservations (start_date, end_date, customer_id, clerk_id_pickup, credit_card, expiration_date)
+VALUES ('2016-02-01', '2016-02-10', 2, 2, "MC456", '2017-01-01');
+
+# Not started
+INSERT INTO reservations (start_date, end_date, customer_id, credit_card, expiration_date)
+VALUES ('2016-03-01', '2016-03-10', 3, "VISA777", '2017-01-01');
+
+# RESERVATIONS_TOOLS
+INSERT INTO reservations_tools (reservation_id, tool_id) 
+VALUES (1, 1);
+
+INSERT INTO reservations_tools (reservation_id, tool_id) 
+VALUES (1, 2);
+
+INSERT INTO reservations_tools (reservation_id, tool_id) 
+VALUES (1, 3);
+
+INSERT INTO reservations_tools (reservation_id, tool_id) 
+VALUES (2, 1);
+
+INSERT INTO reservations_tools (reservation_id, tool_id) 
+VALUES (2, 2);
+
+INSERT INTO reservations_tools (reservation_id, tool_id) 
+VALUES (3, 3);
+
+INSERT INTO reservations_tools (reservation_id, tool_id) 
+VALUES (3, 4);
+
+# SERVICE ORDERS
+INSERT INTO service_orders (clerk_id, tool_id, start_date, end_date, est_cost) 
+VALUES (1, 5, '2016-01-01', '2017-12-31', 100.00);
 
 # ### END SEED
 
