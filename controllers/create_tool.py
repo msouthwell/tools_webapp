@@ -10,22 +10,13 @@ from database import dbapi
 @view('create_tool')
 def view_create_tool():
     try:
-        connection = dbapi.connect()  # return db connection
-        if connection == -1:
-            return template('error.tpl', message='Database connection issue.')
-
-        c = connection.cursor()
-
-        # Populate for category drop-down
-        c.execute("SELECT * FROM categories") 
-        categories = c.fetchall()
+        categories = dbapi.get_categories()
+        print("categories: " + str(categories))
     except pymysql.err.Error as e:
         return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
-    else:
-        c.close()
-        return {'categories':categories,'message':''}
 
- 
+    return {'categories':categories,'message':''}
+
 @route('/create_tool', method=['POST'])
 @view('create_tool')
 def create_tool():

@@ -24,4 +24,18 @@ def connect():
         return connection
     except pymysql.err.Error as e:
         print('An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
-        return -1
+        raise # let the exception raise to the caller
+
+def get_categories():
+    try:
+        connection = connect()  # return db connection
+
+        c = connection.cursor()
+
+        # Populate for category drop-down
+        c.execute("SELECT * FROM categories ORDER BY category_id") 
+        categories = c.fetchall()
+    finally:
+        c.close() # make sure the connection gets closed
+
+    return categories
