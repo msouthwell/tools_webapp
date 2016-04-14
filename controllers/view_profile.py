@@ -31,9 +31,8 @@ def view_profile(customer_id):
 
     c.execute(sql, customer_id)
     data = c.fetchall()
-    print(data)
-    print(type(data))
     c.close()
 
-    data['message'] = ''  # Template expects a message.  Used for debugging or informing the user of something without altering the template
-    return data
+    output = template('view_profile', rows=data)
+
+    return output
