@@ -6,7 +6,7 @@
   <form class="form-vertical" role="form" action="/check_available_tools" method="post">
     <hr>
     %for category in categories:
-      <div class="radio">
+      <div class="form-control radio">
         <label><input type="radio" name="category" value="{{category['category_id']}}"/> {{category['category']}}</label>
       </div>
     %end
@@ -25,7 +25,10 @@
   <script>
     $(document).ready(function(){
       $("input.date-control").datepicker({
-        startDate: '+0d'
+        startDate: '+0d',
+        todayBtn: true,
+        autoclose: true,
+        todayHighlight: true
       });
       $("input[type=radio]:first").attr('checked', true);
     });
