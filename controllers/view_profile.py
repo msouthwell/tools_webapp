@@ -27,7 +27,8 @@ def view_profile(customer_id):
           JOIN reservations r ON (c.customer_id = r.customer_id) \
           JOIN reservations_tools rt ON (r.reservation_id = rt.reservation_id) \
           JOIN tools t ON (t.tool_id = rt.tool_id) \
-          WHERE c.customer_id = %s"
+          WHERE c.customer_id = %s \
+          ORDER BY r.start_date"
 
     c.execute(sql, customer_id)
     data = c.fetchall()
