@@ -20,19 +20,21 @@ def view_profile(customer_id):
 
     c = connection.cursor()
 
-    sql = "SELECT c.*, r.*, rt.*, t.*, \
-          (SELECT CONCAT (first_name, ' ', last_name) FROM clerks WHERE clerk_id = r.clerk_id_dropoff) AS d_name, \
-          (SELECT CONCAT(first_name, ' ', last_name) FROM clerks WHERE clerk_id = r.clerk_id_pickup) AS p_name \
-          FROM customers c \
-          JOIN reservations r ON (c.customer_id = r.customer_id) \
-          JOIN reservations_tools rt ON (r.reservation_id = rt.reservation_id) \
-          JOIN tools t ON (t.tool_id = rt.tool_id) \
-          WHERE c.customer_id = %s \
-          ORDER BY r.start_date"
+    sql = "SELECT c.*,r.*, t.short_description, t.deposit, rt.*, t.day_price, \
+            (SELECT CONCAT (first_name, ' ', last_name) FROM clerks WHERE clerk_id = r.clerk_id_dropoff) AS d_name, \
+            (SELECT CONCAT(first_name, ' ', last_name) FROM clerks WHERE clerk_id = r.clerk_id_pickup) AS p_name \
+            FROM customers c \
+            JOIN reservations r ON (c.customer_id = r.customer_id) \
+            LEFT JOIN reservations_tools rt ON (r.reservation_id = rt.reservation_id) \
+            LEFT OUTER JOIN tools t ON (t.tool_id = rt.tool_id) \
+            WHERE c.customer_id = %s\
+            ORDER BY r.start_date"
 
     c.execute(sql, customer_id)
     data = c.fetchall()
     c.close()
+    for d in data:
+        print(d)
 
     output = template('view_profile', rows=data)
 
