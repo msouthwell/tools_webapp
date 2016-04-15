@@ -15,6 +15,7 @@
     </div>
     <hr>
     <div class="container reservation_tools">
+      <input type="hidden" name="reserved_tools" value="{{reserved_tools}}"/>
       <table class="table">
         <thead>
           <tr>
@@ -28,9 +29,7 @@
         <tbody>
         </tbody>
       </table>
-    </div>
-    <hr>
-    <div class="container reservation_add">
+      <hr>
       <div class="form-group">
         <label for="category" class="control-label">Type of Tool:<em>*</em></label>
         <select class="form-control" name="category" required>
@@ -47,6 +46,7 @@
         %end
         </select>
       </div>
+      <input class="form-control btn btn-primary" type="submit" name="Add Tool" value="Add Tool"/>
       <hr>
       <input class="form-control btn btn-primary" type="submit" name="Calculate Total" value="Calculate Total"/>
     </div>
@@ -55,10 +55,8 @@
     $(document).ready(function(){
       if (reservationDatesSpecified()) {
         $("div.reservation_tools").show();
-        $("div.reservation_add").show();
       } else {
         $("div.reservation_tools").hide();
-        $("div.reservation_add").hide();
       }
       $("input.date-control").datepicker({
         startDate: '+0d',
