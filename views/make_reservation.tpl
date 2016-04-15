@@ -1,4 +1,6 @@
 %#template for creating a login screen
+%from controllers import make_reservation
+%import json
 
 % rebase('layout.tpl', title="Make Reservation")
 <div class="container">
@@ -27,6 +29,15 @@
           </tr>
         </thead>
         <tbody>
+        %for reserved_tool in eval(reserved_tools):
+          <tr>
+            <td>{{reserved_tool['tool_id']}}</td>
+            <td>{{reserved_tool['short_description']}}</td>
+            <td>{{reserved_tool['deposit']}}</td>
+            <td>{{reserved_tool['day_price']}}</td>
+            <td><a href="/view_tool/{{reserved_tool['tool_id']}}">Details</a></td>
+          </tr>
+        %end
         </tbody>
       </table>
       <hr>
@@ -34,15 +45,15 @@
         <label for="category" class="control-label">Type of Tool:<em>*</em></label>
         <select class="form-control" name="category" required>
         %for category in categories:
-          <option value="{{category['category_id']}}">{{category['category']}}</option>
+          <option value="{{category['category_id']}}" {{!'selected="selected"' if str(category['category_id']) == selected_category else ""}}>{{category['category']}}</option>
         %end
         </select>
       </div>
       <div class="form-group">
-        <label for="tool" class="control-label">Tool:<em>*</em></label>
-        <select class="form-control" name="tool" required>
+        <label for="requested_tool" class="control-label">Tool:<em>*</em></label>
+        <select class="form-control" name="requested_tool" required>
         %for tool in tools:
-          <option value="{{tool['tool_id']}}">{{tool['tool_id']}} {{tool['short_description']}} ${{tool['day_price']}}</option>
+          <option value="{{json.dumps(tool, default=make_reservation.decimal_default)}}">{{tool['tool_id']}} {{tool['short_description']}} ${{tool['day_price']}}</option>
         %end
         </select>
       </div>
@@ -65,18 +76,39 @@
         todayHighlight: true
       }).on('changeDate', function(e) {
         if (reservationDatesSpecified()) {
-      	  $("div.reservation_add").show();
-      	  $("form.reservation_form").submit();
+          $("div.reservation_add").show();
+          $("form.reservation_form").submit();
         }
       });
       $("select[name=category]").on('change', function(e) {
         $("form.reservation_form").submit();
       });
-      
+
+      $("form.reservation_form").submit(function(e){
+        e.preventDefault();
+        var form = this;
+        var button = $(this).find("input[type=submit]:focus").attr("value");
+        if (button == 'Add Tool') {
+          // get requested tool; is JSON in the value
+          var requested_tool = $.parseJSON($("select[name=requested_tool]").val());
+
+          // add the requested tool to the reserved tool list
+          var reserved_tools_field = $("input[name=reserved_tools]");
+          var reserved_tools = $.parseJSON(reserved_tools_field.val());
+          reserved_tools.push(requested_tool);
+          reserved_tools_field.val(JSON.stringify(reserved_tools));
+
+          // submit the form to redraw the table
+          form.submit();
+        } else {
+          form.submit();
+        }
+      });
+
       function reservationDatesSpecified() {
-      	var start_date = $("input.date-control[name=start_date]").val();
-      	var end_date = $("input.date-control[name=end_date]").val();
-      	return start_date.length > 0 && end_date.length > 0;
+        var start_date = $("input.date-control[name=start_date]").val();
+        var end_date = $("input.date-control[name=end_date]").val();
+        return start_date.length > 0 && end_date.length > 0;
       }
     });
   </script>
