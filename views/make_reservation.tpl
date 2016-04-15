@@ -29,13 +29,13 @@
           </tr>
         </thead>
         <tbody>
-        %for reserved_tool in eval(reserved_tools):
+        %for index, reserved_tool in enumerate(eval(reserved_tools)):
           <tr>
             <td>{{reserved_tool['tool_id']}}</td>
             <td>{{reserved_tool['short_description']}}</td>
             <td>{{reserved_tool['deposit']}}</td>
             <td>{{reserved_tool['day_price']}}</td>
-            <td><a href="/view_tool/{{reserved_tool['tool_id']}}">Details</a></td>
+            <td><a href="{{index}}" class="remove_tool">Remove</a></td>
           </tr>
         %end
         </tbody>
@@ -81,6 +81,20 @@
         }
       });
       $("select[name=category]").on('change', function(e) {
+        $("form.reservation_form").submit();
+      });
+      $("a.remove_tool").click(function(e){
+        e.preventDefault();
+        var link = this;
+        var removeIndex = $(link).attr('href');
+
+        // remove the requested tool from the reserved tool list
+        var reserved_tools_field = $("input[name=reserved_tools]");
+        var reserved_tools = $.parseJSON(reserved_tools_field.val());
+        reserved_tools.splice(removeIndex, 1);
+        reserved_tools_field.val(JSON.stringify(reserved_tools));
+
+        // submit the form to redraw the table
         $("form.reservation_form").submit();
       });
 
