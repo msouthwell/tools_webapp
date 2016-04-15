@@ -65,3 +65,5 @@ venv/
 
  # Sphinx documentation
  docs/_build/
+
+/database/database.json
