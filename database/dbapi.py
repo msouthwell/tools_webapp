@@ -32,10 +32,27 @@ def get_categories():
 
         c = connection.cursor()
 
-        # Populate for category drop-down
         c.execute("SELECT * FROM categories ORDER BY category_id") 
         categories = c.fetchall()
     finally:
         c.close() # make sure the connection gets closed
 
     return categories
+
+def get_available_tools(category, start_date, end_date):
+    try:
+        connection = connect()  # return db connection
+
+        c = connection.cursor()
+
+        c.execute("SELECT t.tool_id, t.short_description, t.deposit, t.day_price FROM tools AS t "+
+                  "WHERE category_id = %s "+
+                  "AND NOT EXISTS(SELECT * FROM reservations AS r JOIN reservations_tools AS rt ON r.reservation_id = rt.reservation_id WHERE t.tool_id = rt.tool_id AND r.start_date <= %s AND r.end_date >= %s) "+
+                  "AND NOT EXISTS(SELECT * FROM service_orders AS so WHERE t.tool_id = so.tool_id AND so.start_date <= %s AND so.end_date >= %s) "+
+                  "AND NOT EXISTS(SELECT * FROM sells AS s WHERE t.tool_id = s.tool_id)", (category, end_date, start_date, end_date, start_date))
+        
+        tools = c.fetchall()
+    finally:
+        c.close()
+        
+    return tools
