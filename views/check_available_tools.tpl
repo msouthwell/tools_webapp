@@ -5,15 +5,11 @@
   <h1>Check Available Tools</h1>
   <form class="form-vertical" role="form" action="/check_available_tools" method="post">
     <hr>
-    <div class="radio">
-      <label><input type="radio" name="category" value="1" checked autofocus /> Hand Tools</label>
-    </div>
-    <div class="radio">
-      <label><input type="radio" name="category" value="2"/> Construction Equipment</label>
-    </div>
-    <div class="radio">
-      <label><input type="radio" name="category" value="3"/> Power Tools</label>
-    </div>
+    %for category in categories:
+      <div class="form-control radio">
+        <label><input type="radio" name="category" value="{{category['category_id']}}"/> {{category['category']}}</label>
+      </div>
+    %end
     <hr>
     <div class="form-group">
       <label for="start_date" class="control-label">Start Date<em>*</em></label>
@@ -29,8 +25,12 @@
   <script>
     $(document).ready(function(){
       $("input.date-control").datepicker({
-        startDate: '+0d'
+        startDate: '+0d',
+        todayBtn: true,
+        autoclose: true,
+        todayHighlight: true
       });
+      $("input[type=radio]:first").attr('checked', true);
     });
   </script>
 </div>

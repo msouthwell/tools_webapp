@@ -39,10 +39,10 @@
         <div class="form-group">
             <label for="category_id" class="control-label col-sm-4">Category<em>*</em></label>
             <div class="col-sm-8">
-                <select class="form-control" maxlength="32" name="category_id" required>
-                    <option value="1">Hand Tools</option>
-                    <option value="2">Construction Equipment</option>
-                    <option value="3">Power Tools</option>
+                <select type="password" class="form-control" maxlength="32" name="category_id" required>
+                %for category in categories:
+                    <option value="{{category['category_id']}}">{{category['category']}}</option>
+                %end
                 </select>
             </div>
         </div>
