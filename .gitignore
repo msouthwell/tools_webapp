@@ -67,3 +67,8 @@ venv/
  docs/_build/
 
 /database/database.json
+
+/.project
+/.pydevproject
+/.settings/
+
