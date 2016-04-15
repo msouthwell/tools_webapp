@@ -17,32 +17,38 @@ def login():
     login = request.forms.get('login', '').strip()
     password = request.forms.get('password', '').strip()
     user_type = request.forms.get('usertype', '').strip()
+    
+    try:
+        connection = dbapi.connect()  # return db connection
 
-    connection = dbapi.connect()  # return db connection
-    if connection == -1:
-        return template('error.tpl', message='Database connection issue.')
+        c = connection.cursor()
 
-    if user_type == "clerks":
-        sql = "SELECT clerk_id, login, password FROM clerks WHERE login=%s"
-    elif user_type == "customers":
-        sql = "SELECT customer_id, email, password FROM customers WHERE email=%s"
-
-    print(sql)
-    c = connection.cursor()
-    c.execute(sql, login)  # login or email
-    result = c.fetchone()
-
-    if result is None:
-        return template('login.tpl', message='Email or password incorrect')
-
-    c.close()
-
-    if password == result['password']:
         if user_type == "clerks":
-            response.set_cookie("clerk_id", str(result['clerk_id']))
-            redirect('/clerk_main_menu')
+            sql = "SELECT clerk_id, login, password FROM clerks WHERE login=%s"
+            c.execute(sql, (login))  # login or email
+            result = c.fetchone()
+            
+            if result is not None and password == result['password']:
+                response.set_cookie("clerk_id", str(result['clerk_id']))
+                redirect('/clerk_main_menu')
+            else:
+                return {'message':'Login or password incorrect'}
+
         elif user_type == "customers":
-            response.set_cookie("customer_id", str(result['customer_id']))
-            redirect('/customer_main_menu')
-    else:
-        return template('login.tpl', message='Email or password incorrect')
+            sql = "SELECT customer_id, email, password FROM customers WHERE email=%s"
+            c.execute(sql, (login))  # login or email
+            result = c.fetchone()
+
+            if result is not None:
+                if password == result['password']:
+                    response.set_cookie("customer_id", str(result['customer_id']))
+                    redirect('/customer_main_menu')
+                else:
+                    return {'message':'Email or password incorrect'}
+            else:
+                redirect('/create_profile')
+
+    except pymysql.err.Error as e:
+        return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
+    finally:
+        c.close()
