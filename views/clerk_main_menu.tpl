@@ -30,7 +30,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-offset-4 col-sm-4">
-                    <form class="form-horizontal" role="form" action="/hold_for_repair" method="get">
+                    <form class="form-horizontal" role="form" action="/service_order" method="get">
                         <input class="form-control" type="submit" value="Hold For Repair" name="holdForRepair">
                     </form>
                 </div>

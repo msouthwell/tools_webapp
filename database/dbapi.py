@@ -39,7 +39,7 @@ def get_categories():
 
     return categories
 
-def get_available_tools(category, start_date, end_date):
+def get_available_tools(category, start_date_datetime, end_date_datetime):
     try:
         connection = connect()  # return db connection
 
@@ -49,7 +49,8 @@ def get_available_tools(category, start_date, end_date):
                   "WHERE category_id = %s " +
                   "AND NOT EXISTS(SELECT * FROM reservations AS r JOIN reservations_tools AS rt ON r.reservation_id = rt.reservation_id WHERE t.tool_id = rt.tool_id AND r.start_date <= %s AND r.end_date >= %s) " +
                   "AND NOT EXISTS(SELECT * FROM service_orders AS so WHERE t.tool_id = so.tool_id AND so.start_date <= %s AND so.end_date >= %s) " +
-                  "AND NOT EXISTS(SELECT * FROM sells AS s WHERE t.tool_id = s.tool_id)", (category, end_date, start_date, end_date, start_date))
+                  "AND NOT EXISTS(SELECT * FROM sells AS s WHERE t.tool_id = s.tool_id)", (category, end_date_datetime, start_date_datetime, end_date_datetime, start_date_datetime))
+        print('get_available_tools: ' + str(c._last_executed))
 
         tools = c.fetchall()
     finally:
@@ -57,7 +58,7 @@ def get_available_tools(category, start_date, end_date):
 
     return tools
 
-def check_available_tools(reserved_tools, start_date, end_date):
+def check_available_tools(reserved_tools, start_date_datetime, end_date_datetime):
     try:
         connection = connect()  # return db connection
 
@@ -66,7 +67,8 @@ def check_available_tools(reserved_tools, start_date, end_date):
         c.execute("SELECT t.tool_id, t.short_description, t.deposit, t.day_price FROM tools AS t " +
                   "WHERE NOT EXISTS(SELECT * FROM reservations AS r JOIN reservations_tools AS rt ON r.reservation_id = rt.reservation_id WHERE t.tool_id = rt.tool_id AND r.start_date <= %s AND r.end_date >= %s) " +
                   "AND NOT EXISTS(SELECT * FROM service_orders AS so WHERE t.tool_id = so.tool_id AND so.start_date <= %s AND so.end_date >= %s) " +
-                  "AND NOT EXISTS(SELECT * FROM sells AS s WHERE t.tool_id = s.tool_id)", (end_date, start_date, end_date, start_date))
+                  "AND NOT EXISTS(SELECT * FROM sells AS s WHERE t.tool_id = s.tool_id)", (end_date_datetime, start_date_datetime, end_date_datetime, start_date_datetime))
+        print('check_available_tools: ' + str(c._last_executed))
 
         tools = c.fetchall()
 
