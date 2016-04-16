@@ -1,5 +1,4 @@
 from bottle import route, view, template, request, response, redirect
-import pymysql.cursors
 import pymysql.err
 import datetime
 from database import dbapi
@@ -9,20 +8,12 @@ from database import dbapi
 @view('check_available_tools')
 def view_check_avilable_tools():
     try:
-        connection = dbapi.connect()  # return db connection
-        if connection == -1:
-            return template('error.tpl', message='Database connection issue.')
-
-        c = connection.cursor()
-
-        # Populate for category drop-down
-        c.execute("SELECT * FROM categories ORDER BY category_id") 
-        categories = c.fetchall()
+        categories = dbapi.get_categories()
+        print("categories: " + str(categories))
     except pymysql.err.Error as e:
         return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
-    else:
-        c.close()
-        return {'categories':categories,'message':''}
+
+    return {'categories':categories,'message':''}
 
 @route('/check_available_tools', method=['POST'])
 @view('available_tools')
@@ -33,22 +24,13 @@ def check_avilable_tools_post():
     print("start: {:%b, %d %Y}".format(start_date))
     end_date = datetime.datetime.strptime(request.forms.get('end_date', ''), '%m/%d/%Y')
     print("end: {:%b, %d %Y}".format(end_date))
+    
+    try:
+        tools = dbapi.get_available_tools(category, start_date, end_date)
+    except pymysql.err.Error as e:
+        return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
 
-    connection = dbapi.connect()  # return db connection
-    if connection == -1:
-        return template('error.tpl', message='Database connection issue.')
+    for tool in tools:
+        print("tool: " + str(tools))
 
-    c = connection.cursor()
-
-    c.execute("SELECT t.tool_id, t.short_description, t.deposit, t.day_price FROM tools AS t WHERE category_id = %s AND NOT EXISTS"+
-              "(SELECT * FROM reservations AS r JOIN reservations_tools AS rt ON r.reservation_id = rt.reservation_id WHERE t.tool_id = rt.tool_id AND r.start_date <= %s AND r.end_date >= %s) "+
-              "AND NOT EXISTS(SELECT * FROM sells AS s WHERE t.tool_id = s.tool_id)", (category, end_date, start_date))
-
-    rows = c.fetchall()
-
-    for row in rows:
-        print("row: " + str(row))
-
-    c.close()
-
-    return {'rows':rows}
+    return {'tools':tools}

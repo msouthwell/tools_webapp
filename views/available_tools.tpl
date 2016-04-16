@@ -16,13 +16,13 @@
         </tr>
       </thead>
       <tbody>
-      %for row in rows:
+      %for tool in tools:
         <tr>
-          <td>{{row['tool_id']}}</td>
-          <td>{{row['short_description']}}</td>
-          <td>{{row['deposit']}}</td>
-          <td>{{row['day_price']}}</td>
-          <td><a href="/view_tool/{{row['tool_id']}}">Detail</a></td>
+          <td>{{tool['tool_id']}}</td>
+          <td>{{tool['short_description']}}</td>
+          <td>{{tool['deposit']}}</td>
+          <td>{{tool['day_price']}}</td>
+          <td><a href="/view_tool/{{tool['tool_id']}}">Details</a></td>
         </tr>
       %end
       </tbody>
