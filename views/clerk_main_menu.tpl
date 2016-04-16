@@ -56,13 +56,6 @@
                     </form>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-offset-4 col-sm-4">
-                    <form class="form-horizontal" role="form" action="/login" method="get">
-                        <input class="form-control" type="submit" value="Logout" name="logout">
-                    </form>
-                </div>
-            </div>
         </div>
 
 </div>
