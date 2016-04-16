@@ -10,8 +10,8 @@ import datetime
 def reservation_receipt(reservation_id):
 
     try:
-        credit_card = request.forms.get('credit_card','').strip()
-        expiration_date = request.forms.get('expiration_date','')
+        credit_card = request.forms.get('credit_card', '').strip()
+        expiration_date = request.forms.get('expiration_date', '')
         expiration_date_datetime = datetime.datetime.strptime(expiration_date, '%m/%d/%Y')
         utilities.update_credit_card(reservation_id, credit_card, expiration_date_datetime)
 
@@ -23,8 +23,6 @@ def reservation_receipt(reservation_id):
 
         print(data['clerk_id_pickup'])
         connection = dbapi.connect()  # return db connection
-        if connection == -1:
-            return template('login.tpl')
 
         c = connection.cursor()
         sql = "SELECT first_name, last_name FROM customers WHERE customer_id = %s"
@@ -34,15 +32,15 @@ def reservation_receipt(reservation_id):
         sql = "SELECT first_name, last_name FROM clerks WHERE clerk_id = %s"
         c.execute(sql, data['clerk_id_pickup'])
         tmp = c.fetchone()
-        data['clerk_pickup_name'] =  tmp['first_name'] + ' ' + tmp['last_name']
+        data['clerk_pickup_name'] = tmp['first_name'] + ' ' + tmp['last_name']
         c.close()
 
         table = ""
-        deposit= 0
-        rental =0
+        deposit = 0
+        rental = 0
 
         for row in tools:
-            table= table+"<tr><td>{tool_id}</td><td>{short_description}</td></tr>".format(tool_id=row['tool_id'], short_description=row['short_description'])
+            table = table + "<tr><td>{tool_id}</td><td>{short_description}</td></tr>".format(tool_id=row['tool_id'], short_description=row['short_description'])
             deposit += row['deposit']
             rental += row['day_price']
 
@@ -50,8 +48,8 @@ def reservation_receipt(reservation_id):
         data['deposit_required'] = deposit
         rental = rental * utilities.date_differance(reservation['start_date'], reservation['end_date'])
         data['estimated_cost'] = rental
-        data['credit_card']= credit_card
-        data['expiration_date']= expiration_date
+        data['credit_card'] = credit_card
+        data['expiration_date'] = expiration_date
 
     except pymysql.err.Error as e:
         return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))

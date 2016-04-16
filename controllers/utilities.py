@@ -6,18 +6,15 @@ from database import dbapi
 
 # returns the reservation data
 def view_reservation(reservation_id):
-
     try:
         connection = dbapi.connect()
-        if connection == -1:
-            return template('error.tpl', message="Database could not connect");
 
         c = connection.cursor()
 
         sql = "SELECT * FROM RESERVATIONS " \
             "WHERE reservation_id = %s"
         c.execute(sql, reservation_id)
-        data= c.fetchone()
+        data = c.fetchone()
         c.close()
     except pymysql.err.Error as e:
         return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
@@ -28,8 +25,6 @@ def view_reservation(reservation_id):
 def date_differance(start_date, end_date):
     try:
         connection = dbapi.connect()
-        if connection == -1:
-            return template('error.tpl', message="Database could not connect");
 
         c = connection.cursor()
         dd = "SELECT DATEDIFF (%s, %s) AS Diffdate"
@@ -42,18 +37,15 @@ def date_differance(start_date, end_date):
         return datediff['Diffdate']
 
 def reservation_tools(reservation_id):
-
     try:
         connection = dbapi.connect()
-        if connection == -1:
-            return template('error.tpl', message="Database could not connect");
 
         c = connection.cursor()
 
         sql = "SELECT * FROM RESERVATIONS_TOOLS NATURAL JOIN TOOLS " \
             "WHERE reservation_id = %s"
         c.execute(sql, reservation_id)
-        data= c.fetchall()
+        data = c.fetchall()
         c.close()
     except pymysql.err.Error as e:
         return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
@@ -61,11 +53,8 @@ def reservation_tools(reservation_id):
         return data
 
 def update_pickup_clerk(reservation_id):
-
     try:
         connection = dbapi.connect()
-        if connection == -1:
-            return template('error.tpl', message="Database could not connect");
 
         c = connection.cursor()
 
@@ -78,11 +67,8 @@ def update_pickup_clerk(reservation_id):
         return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
 
 def update_dropoff_clerk(reservation_id):
-
     try:
         connection = dbapi.connect()
-        if connection == -1:
-            return template('error.tpl', message="Database could not connect");
 
         c = connection.cursor()
 
@@ -95,11 +81,8 @@ def update_dropoff_clerk(reservation_id):
         return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
 
 def update_credit_card(reservation_id, cc, ed):
-
     try:
         connection = dbapi.connect()
-        if connection == -1:
-            return template('error.tpl', message="Database could not connect");
 
         c = connection.cursor()
 

@@ -9,14 +9,12 @@ from database import dbapi
 def view_tool_post():
     tool_id = request.forms.get('tool_id', '').strip()
     return view_tool(tool_id)
-    
+
 @route('/view_tool/<tool_id>')
 @view('view_tool')
 def view_tool(tool_id):
     try:
         connection = dbapi.connect()  # return db connection
-        if connection == -1:
-            return template('error.tpl', message='Database connection issue.')
 
         c = connection.cursor()
 

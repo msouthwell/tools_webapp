@@ -18,18 +18,16 @@ def view_session_profile():
 def view_profile(customer_id):
     try:
         connection = dbapi.connect()  # return db connection
-        if connection == -1:
-            return template('error.tpl', message='Database connection issue.')
 
         c = connection.cursor()
 
         sql = "SELECT * FROM customers WHERE customer_id = %s"
 
-        c.execute(sql,customer_id)
+        c.execute(sql, customer_id)
         data = c.fetchone()
         c.close()
     except pymysql.err.Error as e:
         return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
     else:
-        data['message']=''  # Template expects a message.  Used for debugging or informing the user of something without altering the template
+        data['message'] = ''  # Template expects a message.  Used for debugging or informing the user of something without altering the template
         return data

@@ -24,14 +24,12 @@ def new_profile():
 
     try:
         connection = dbapi.connect()  # return db connection
-        if connection == -1:
-            return template('error.tpl', message='Database connection issue.')
 
         c = connection.cursor()
 
         sql = "INSERT INTO customers(email, first_name, last_name, password, address, work_phone_cc, work_phone_number, home_phone_cc, home_phone_number) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
 
-        c.execute(sql,(email, first_name, last_name, password, address, work_phone_cc, work_phone_number, home_phone_cc, home_phone_number))
+        c.execute(sql, (email, first_name, last_name, password, address, work_phone_cc, work_phone_number, home_phone_cc, home_phone_number))
         customer_id = c.lastrowid
         connection.commit()
 
