@@ -1,5 +1,5 @@
 
-from bottle import template
+from bottle import template, request
 import pymysql.cursors
 import pymysql.err
 from database import dbapi
@@ -60,6 +60,40 @@ def reservation_tools(reservation_id):
     else:
         return data
 
+def update_pickup_clerk(reservation_id):
+
+    try:
+        connection = dbapi.connect()
+        if connection == -1:
+            return template('error.tpl', message="Database could not connect");
+
+        c = connection.cursor()
+
+        sql = "UPDATE RESERVATIONS SET clerk_id_pickup=%s WHERE reservation_id = %s"
+        clerk_id = int(request.get_cookie('clerk_id'))
+        c.execute(sql, (clerk_id, reservation_id))
+        connection.commit()
+        c.close()
+    except pymysql.err.Error as e:
+        return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
+
+def update_dropoff_clerk(reservation_id):
+
+    try:
+        connection = dbapi.connect()
+        if connection == -1:
+            return template('error.tpl', message="Database could not connect");
+
+        c = connection.cursor()
+
+        sql = "UPDATE RESERVATIONS SET clerk_id_dropoff=%s WHERE reservation_id = %s"
+        clerk_id = int(request.get_cookie('clerk_id'))
+        c.execute(sql, (clerk_id, reservation_id))
+        connection.commit()
+        c.close()
+    except pymysql.err.Error as e:
+        return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
+
 def update_credit_card(reservation_id, cc, ed):
 
     try:
@@ -72,6 +106,7 @@ def update_credit_card(reservation_id, cc, ed):
         sql = "UPDATE RESERVATIONS SET credit_card=%s,expiration_date=%s WHERE reservation_id = %s"
 
         c.execute(sql, (cc, ed, reservation_id))
+        connection.commit()
         c.close()
     except pymysql.err.Error as e:
         return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))

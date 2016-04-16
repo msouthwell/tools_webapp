@@ -4,7 +4,8 @@
 % rebase('layout.tpl', title="Pick Up Receipt")
 <div class="container">
     <div class="row">
-        <h2>Reservation Details</h2>
+    <h2>Handyman Tools Rental Contract</h2>
+        <h4>Reservation Details</h4>
         <div class="table">
             <table class="table">
                 <tr>
@@ -14,6 +15,14 @@
                 <tr>
                     <td>Customer ID:</td>
                     <td>{{customer_id}}</td>
+                </tr>
+                <tr>
+                    <td>Customer Name:</td>
+                    <td>{{customer_name}}</td>
+                </tr>
+                <tr>
+                    <td>Clerk On Duty:</td>
+                    <td>{{clerk_pickup_name}}</td>
                 </tr>
                 <tr>
                     <td>Start Date:</td>
@@ -27,7 +36,7 @@
         </div>
     </div>
     <div class="row">
-        <h2>Tool Details</h2>
+        <h4>Tools Rented</h4>
         <div class="table">
             <table class="table">
                 {{!tool_table}}
@@ -38,17 +47,17 @@
         <div class="table">
             <table class="table">
                 <tr>
-                    <td>Deposit Required:</td>
+                    <td>Deposit Held:</td>
                     <td>{{deposit_required}}</td>
                 </tr>
                 <tr>
-                    <td>Estimated Cost:</td>
+                    <td>Rental Cost:</td>
                     <td>{{estimated_cost}}</td>
                 </tr>
             </table>
         </div>
     </div>
-      <hr>
+    <hr>
     <div class="row">
         <div class="table">
             <table class="table">
@@ -63,6 +72,8 @@
             </table>
         </div>
     </div>
+    <p>______________________________________________________</p>
+    <h6>Customer Signature</h6>
 
 </div>
 </div>
