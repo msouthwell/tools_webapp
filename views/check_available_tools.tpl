@@ -17,13 +17,13 @@
     </div>
     <hr>
     <div class="form-group">
-      <label for="start_date" class="control-label col-sm-4"">Start Date<em>*</em></label>
+      <label for="start_date" class="control-label col-sm-4">Start Date<em>*</em></label>
       <div class="col-sm-8">
         <input class="form-control date-control" maxlength="10" name="start_date" required/>
       </div>
     </div>
     <div class="form-group">
-      <label for="end_date" class="control-label col-sm-4"">End Date<em>*</em></label>
+      <label for="end_date" class="control-label col-sm-4">End Date<em>*</em></label>
       <div class="col-sm-8">
         <input class="form-control date-control" maxlength="10" name="end_date" required/>
       </div>

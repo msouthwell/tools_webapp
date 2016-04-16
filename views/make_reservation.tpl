@@ -6,18 +6,22 @@
 <div class="container">
   <h1>Make Reservation</h1>
   <h4>{{message}}</h4>
-  <form class="form-vertical reservation_form" role="form" action="/make_reservation" method="post">
-    <hr>
+  <hr>
+  <form class="form-horizontal reservation_form" role="form" action="/make_reservation" method="post">
     <div class="form-group">
-      <label for="start_date" class="control-label">Start Date<em>*</em></label>
-      <input class="form-control date-control" maxlength="10" name="start_date" value="{{start_date}}" required/>
+      <label for="start_date" class="control-label col-sm-4">Start Date<em>*</em></label>
+      <div class="col-sm-8">
+        <input class="form-control date-control" maxlength="10" name="start_date" value="{{start_date}}" required/>
+      </div>
     </div>
     <div class="form-group">
-      <label for="end_date" class="control-label">End Date<em>*</em></label>
-      <input class="form-control date-control" maxlength="10" name="end_date" value="{{end_date}}" required/>
+      <label for="end_date" class="control-label col-sm-4">End Date<em>*</em></label>
+      <div class="col-sm-8">
+        <input class="form-control date-control" maxlength="10" name="end_date" value="{{end_date}}" required/>
+      </div>
     </div>
     <hr>
-    <div class="container reservation_tools">
+    <div class="reservation_tools">
       <input type="hidden" name="reserved_tools" value="{{reserved_tools}}"/>
       <table class="table">
         <thead>
@@ -43,22 +47,30 @@
       </table>
       <hr>
       <div class="form-group">
-        <label for="category" class="control-label">Type of Tool:<em>*</em></label>
-        <select class="form-control" name="category" required>
-        %for category in categories:
-          <option value="{{category['category_id']}}" {{!'selected="selected"' if str(category['category_id']) == selected_category else ""}}>{{category['category']}}</option>
-        %end
-        </select>
+        <label for="category" class="control-label col-sm-4">Type of Tool<em>*</em></label>
+        <div class="col-sm-8">
+          <select class="form-control" name="category" required>
+          %for category in categories:
+            <option value="{{category['category_id']}}" {{!'selected="selected"' if str(category['category_id']) == selected_category else ""}}>{{category['category']}}</option>
+          %end
+          </select>
+        </div>
       </div>
       <div class="form-group">
-        <label for="requested_tool" class="control-label">Tool:<em>*</em></label>
-        <select class="form-control" name="requested_tool" required>
-        %for tool in tools:
-          <option value="{{json.dumps(tool, default=make_reservation.decimal_default)}}">{{tool['tool_id']}} {{tool['short_description']}} ${{'{:.2f}'.format(float(tool['day_price']))}}</option>
-        %end
-        </select>
+        <label for="requested_tool" class="control-label col-sm-4">Tool<em>*</em></label>
+        <div class="col-sm-8">
+          <select class="form-control" name="requested_tool" required>
+          %for tool in tools:
+            <option value="{{json.dumps(tool, default=make_reservation.decimal_default)}}">{{tool['tool_id']}} {{tool['short_description']}} ${{'{:.2f}'.format(float(tool['day_price']))}}</option>
+          %end
+          </select>
+        </div>
       </div>
-      <input class="form-control btn btn-primary" type="submit" name="Add Tool" value="Add Tool"/>
+      <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-8">
+          <input class="form-control btn btn-primary" type="submit" name="Add Tool" value="Add Tool"/>
+        </div>
+      </div>
       <hr>
       <input class="form-control btn btn-primary" type="submit" name="Calculate Total" value="Calculate Total"/>
     </div>
