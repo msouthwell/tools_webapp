@@ -21,14 +21,12 @@ def create_clerk():
 
     try:
         connection = dbapi.connect()  # return db connection
-        if connection == -1:
-            return template('error.tpl', message='Database connection issue.')
 
         c = connection.cursor()
 
         sql = "INSERT INTO clerks(login, first_name, last_name, password) VALUES (%s, %s, %s, %s)"
 
-        c.execute(sql,(login, first_name, last_name, password))
+        c.execute(sql, (login, first_name, last_name, password))
         cust_id = c.lastrowid
         connection.commit()
 

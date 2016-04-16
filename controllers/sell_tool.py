@@ -4,21 +4,21 @@ import pymysql.err
 from database import dbapi
 
 
-@route('/view_tool', method=['POST'])
-@view('view_tool')
-def view_tool_post():
+@route('/sell', method=['POST'])
+@view('sell')
+def sell_tool_post():
     tool_id = request.forms.get('tool_id', '').strip()
-    return view_tool(tool_id)
+    return sell_tool(tool_id)
 
-@route('/view_tool/<tool_id>')
-@view('view_tool')
-def view_tool(tool_id):
+@route('/sell_tool/<tool_id>')
+@view('sell_tool')
+def sell_tool(tool_id):
     try:
         connection = dbapi.connect()  # return db connection
 
         c = connection.cursor()
 
-        c.execute("SELECT * FROM tools AS t JOIN categories AS c ON t.category_id = c.category_id WHERE t.tool_id = %s", (tool_id))
+        c.execute("SELECT *, (original_price / 2) AS sell_price FROM tools AS t JOIN categories AS c ON t.category_id = c.category_id WHERE t.tool_id = %s", (tool_id))
         data = c.fetchone()
         c.close()
     except pymysql.err.Error as e:

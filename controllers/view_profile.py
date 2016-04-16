@@ -14,7 +14,6 @@ def view_session_profile():
 @route('/view_profile/<customer_id>')
 @view('view_profile')
 def view_profile(customer_id):
-
     connection = dbapi.connect()  # return db connection
     if connection == -1:
         return template('login.tpl')

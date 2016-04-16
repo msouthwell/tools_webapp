@@ -1,6 +1,6 @@
-%#template for viewing a clerk profile
+%#template for selling a tool
 
-% rebase('layout.tpl', title="Clerk Profile")
+% rebase('layout.tpl', title="Sell Tool")
 <div class="container">
   <h2>Tool Details</h2>
   <div class="table">
@@ -19,16 +19,30 @@
       </tr>
       <tr>
         <td>Deposit:</td>
-        <td>${{'{:.2f}'.format(deposit)}}</td>
+        <td>{{deposit}}</td>
       </tr>
       <tr>
         <td>Price/Day:</td>
-        <td>${{'{:.2f}'.format(day_price)}}</td>
+        <td>{{day_price}}</td>
       </tr>
       <tr>
         <td>Category:</td>
         <td>{{category}}</td>
       </tr>
+
+      <tr>
+        <td>Original Price:</td>
+        <td>{{original_price}}</td>
+      </tr>
+      
+      <tr>
+        <td>Sell Price:</td>
+        <td>{{sell_price}}</td>
+      </tr>
+
     </table>
+    <div>
+        <input class="form-control" type="submit" name="Submit" value="Submit">
+    </div>
   </div>
 </div>

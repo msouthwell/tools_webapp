@@ -5,8 +5,7 @@
     <div class="row">
         <h1 class="text-center">Clerk's Menu</h1>
     </div>
-    <form class="form-horizontal" role="form" action="/about" method="get">
-        <div class="form-group">
+
             <div class="row">
                 <div class="col-sm-offset-4 col-sm-4">
                     <form class="form-horizontal" role="form" action="/pick_up" method="get">
@@ -30,7 +29,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-offset-4 col-sm-4">
-                    <form class="form-horizontal" role="form" action="/hold_for_repair" method="get">
+                    <form class="form-horizontal" role="form" action="/service_order" method="get">
                         <input class="form-control" type="submit" value="Hold For Repair" name="holdForRepair">
                     </form>
                 </div>
@@ -56,15 +55,6 @@
                     </form>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-offset-4 col-sm-4">
-                    <form class="form-horizontal" role="form" action="/login" method="get">
-                        <input class="form-control" type="submit" value="Logout" name="logout">
-                    </form>
-                </div>
-            </div>
         </div>
 
-</div>
-</form>
 </div>
