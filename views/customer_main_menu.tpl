@@ -21,10 +21,4 @@
       <input class="form-control btn btn-primary" type="submit" name="Make Reservation" value="Make Reservation"/>
     </form>
   </div>
-
-  <div class="col-sm-offset-4 col-sm-8">
-    <form class="form-horizontal" role="form" action="/login" method="get">
-      <input class="form-control btn btn-primary" type="submit" name="Exit" value="Exit"/>
-    </form>
-  </div>
 </div>

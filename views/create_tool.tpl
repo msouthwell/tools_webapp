@@ -44,6 +44,7 @@
                     <option value="{{category['category_id']}}">{{category['category']}}</option>
                 %end
                 </select>
+            <input class="form-control" type="submit" name="add_accessory" value="Add Accessory...">
             </div>
         </div>
         <div class="form-group">

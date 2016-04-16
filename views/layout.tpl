@@ -1,3 +1,4 @@
+%from bottle import route, view, template, request, response
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,9 +23,25 @@
                 <a href="/about" class="navbar-brand">Handyman Tools</a>
             </div>
             <div class="nav navbar-nav pull-right">
+            %if request.get_cookie('customer_id'):
+              <li class="nav-item">
+                <a class="nav-link" href="/customer_main_menu">Menu</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/exit">Exit</a>
+              </li>
+            %elif request.get_cookie('clerk_id'):
+              <li class="nav-item">
+                <a class="nav-link" href="/clerk_main_menu">Menu</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/exit">Exit</a>
+              </li>
+            %else:
               <li class="nav-item">
                 <a class="nav-link" href="/login">Login</a>
               </li>
+            %end
             </div>
         </div>
     </div>

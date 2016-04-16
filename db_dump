@@ -16,6 +16,22 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `categories`
+--
+
+DROP TABLE IF EXISTS `categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `categories` (
+  `category_id` int(11) NOT NULL AUTO_INCREMENT,
+  `category` varchar(255) NOT NULL,
+  `has_accessories` tinyint(1) NOT NULL,
+  PRIMARY KEY (`category_id`),
+  UNIQUE KEY `category` (`category`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `clerks`
 --
 
@@ -23,14 +39,14 @@ DROP TABLE IF EXISTS `clerks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `clerks` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `clerk_id` int(11) NOT NULL AUTO_INCREMENT,
   `login` varchar(16) NOT NULL,
   `first_name` varchar(45) NOT NULL,
   `last_name` varchar(45) NOT NULL,
   `password` varchar(32) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`clerk_id`),
   UNIQUE KEY `login` (`login`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +57,7 @@ DROP TABLE IF EXISTS `customers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `customers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `customer_id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(255) NOT NULL,
   `first_name` varchar(45) NOT NULL,
   `last_name` varchar(45) NOT NULL,
@@ -51,9 +67,128 @@ CREATE TABLE `customers` (
   `work_phone_number` varchar(255) NOT NULL,
   `home_phone_cc` varchar(4) NOT NULL,
   `home_phone_number` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`customer_id`),
   UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `reservations`
+--
+
+DROP TABLE IF EXISTS `reservations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `reservations` (
+  `reservation_id` int(11) NOT NULL AUTO_INCREMENT,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `clerk_id_pickup` int(11) DEFAULT NULL,
+  `clerk_id_dropoff` int(11) DEFAULT NULL,
+  `credit_card` varchar(45) DEFAULT NULL,
+  `expiration_date` date DEFAULT NULL,
+  PRIMARY KEY (`reservation_id`),
+  UNIQUE KEY `customer_id` (`customer_id`,`credit_card`),
+  KEY `clerk_id_pickup` (`clerk_id_pickup`),
+  KEY `clerk_id_dropoff` (`clerk_id_dropoff`),
+  CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`customer_id`),
+  CONSTRAINT `reservations_ibfk_2` FOREIGN KEY (`clerk_id_pickup`) REFERENCES `clerks` (`clerk_id`),
+  CONSTRAINT `reservations_ibfk_3` FOREIGN KEY (`clerk_id_dropoff`) REFERENCES `clerks` (`clerk_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `reservations_tools`
+--
+
+DROP TABLE IF EXISTS `reservations_tools`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `reservations_tools` (
+  `reservation_id` int(11) NOT NULL,
+  `tool_id` int(11) NOT NULL,
+  PRIMARY KEY (`reservation_id`,`tool_id`),
+  KEY `tool_id` (`tool_id`),
+  CONSTRAINT `reservations_tools_ibfk_1` FOREIGN KEY (`reservation_id`) REFERENCES `reservations` (`reservation_id`),
+  CONSTRAINT `reservations_tools_ibfk_2` FOREIGN KEY (`tool_id`) REFERENCES `tools` (`tool_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sells`
+--
+
+DROP TABLE IF EXISTS `sells`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sells` (
+  `tool_id` int(11) NOT NULL,
+  `clerk_id` int(11) NOT NULL,
+  `sale_date` date NOT NULL,
+  PRIMARY KEY (`tool_id`),
+  KEY `clerk_id` (`clerk_id`),
+  CONSTRAINT `sells_ibfk_1` FOREIGN KEY (`clerk_id`) REFERENCES `clerks` (`clerk_id`),
+  CONSTRAINT `sells_ibfk_2` FOREIGN KEY (`tool_id`) REFERENCES `tools` (`tool_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `service_orders`
+--
+
+DROP TABLE IF EXISTS `service_orders`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `service_orders` (
+  `service_order_id` int(11) NOT NULL AUTO_INCREMENT,
+  `clerk_id` int(11) NOT NULL,
+  `tool_id` int(11) NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date DEFAULT NULL,
+  `est_cost` decimal(7,2) DEFAULT NULL,
+  PRIMARY KEY (`service_order_id`),
+  KEY `clerk_id` (`clerk_id`),
+  KEY `tool_id` (`tool_id`),
+  CONSTRAINT `service_orders_ibfk_1` FOREIGN KEY (`clerk_id`) REFERENCES `clerks` (`clerk_id`),
+  CONSTRAINT `service_orders_ibfk_2` FOREIGN KEY (`tool_id`) REFERENCES `tools` (`tool_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tool_accessories`
+--
+
+DROP TABLE IF EXISTS `tool_accessories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tool_accessories` (
+  `tool_id` int(11) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  PRIMARY KEY (`tool_id`,`description`),
+  CONSTRAINT `tool_accessories_ibfk_1` FOREIGN KEY (`tool_id`) REFERENCES `tools` (`tool_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tools`
+--
+
+DROP TABLE IF EXISTS `tools`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tools` (
+  `tool_id` int(11) NOT NULL AUTO_INCREMENT,
+  `short_description` varchar(255) NOT NULL,
+  `full_description` text NOT NULL,
+  `deposit` decimal(7,2) NOT NULL,
+  `day_price` decimal(7,2) NOT NULL,
+  `original_price` decimal(7,2) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  PRIMARY KEY (`tool_id`),
+  KEY `category_id` (`category_id`),
+  CONSTRAINT `tools_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -65,4 +200,4 @@ CREATE TABLE `customers` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-03-27 13:27:29
+-- Dump completed on 2016-04-09 20:51:53
