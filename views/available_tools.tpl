@@ -29,11 +29,17 @@
     </table>
   </div>
   <hr>
-  <form class="form-vertical" role="form" action="/view_tool" method="post">
+  <form class="form-horizontal" role="form" action="/view_tool" method="post">
     <div class="form-group">
-      <label for="tool_id" class="control-label">Part #<em>*</em></label>
-      <input class="form-control" maxlength="255" name="tool_id" required>
+      <label for="tool_id" class="control-label col-sm-4">Part #<em>*</em></label>
+      <div class="col-sm-8">
+        <input class="form-control" maxlength="255" name="tool_id" required>
+      </div>
     </div>
-    <input class="form-control btn btn-primary" type="submit" name="View Details" value="View Details"/>
+    <div class="form-group">
+      <div class="col-sm-offset-4 col-sm-8">
+        <input class="form-control btn btn-primary" type="submit" name="View Details" value="View Details"/>
+      </div>
+    </div>
   </form>
 </div>
