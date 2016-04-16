@@ -13,7 +13,7 @@ def view_reservation(reservation_id):
 
         sql = "SELECT * FROM RESERVATIONS " \
             "WHERE reservation_id = %s"
-        c.execute(sql, reservation_id)
+        c.execute(sql, (reservation_id))
         data = c.fetchone()
         c.close()
     except pymysql.err.Error as e:
@@ -34,7 +34,7 @@ def reservation_tools(reservation_id):
 
         sql = "SELECT * FROM RESERVATIONS_TOOLS NATURAL JOIN TOOLS " \
             "WHERE reservation_id = %s"
-        c.execute(sql, reservation_id)
+        c.execute(sql, (reservation_id))
         data = c.fetchall()
         c.close()
     except pymysql.err.Error as e:
