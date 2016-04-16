@@ -21,7 +21,6 @@ def reservation_receipt(reservation_id):
         tools = utilities.reservation_tools(reservation_id)
         data = reservation.copy()
 
-        print(data['clerk_id_pickup'])
         connection = dbapi.connect()  # return db connection
 
         c = connection.cursor()
