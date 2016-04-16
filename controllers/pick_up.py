@@ -2,11 +2,20 @@ from bottle import route, view, template, request, response
 from controllers import utilities
 import sys
 
-@route('/pick_up/<reservation_id>')
+@route('/pick_up', method=['GET'])
+@view('reservation_select')
+def reservation_select():
+    if request.GET.get('submit','').strip():
+        id = request.GET.get('id', '').strip()
+        return pick_up(id)
+    else:
+        return {'message': ''}
+
+@route('/pick_up/<reservation_id>', method=['POST'])
 @view('pick_up')
 def pick_up(reservation_id):
-    # try:
 
+    try:
         reservation = utilities.view_reservation(reservation_id)
         tools = utilities.reservation_tools(reservation_id)
         data = reservation.copy()
@@ -22,7 +31,8 @@ def pick_up(reservation_id):
         rental = rental * utilities.date_differance(reservation['start_date'], reservation['end_date'])
         data['estimated_cost'] = rental
 
-    # except:
-    #     return template('error.tpl', message='An error occurred in pick_up')
-    # else:
+    except:
+        return template('error.tpl', message='An error occurred in pick_up')
+    else:
         return data
+
