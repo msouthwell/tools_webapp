@@ -5,6 +5,7 @@
 % rebase('layout.tpl', title="Make Reservation")
 <div class="container">
   <h1>Make Reservation</h1>
+  <h4>{{message}}</h4>
   <form class="form-vertical reservation_form" role="form" action="/make_reservation" method="post">
     <hr>
     <div class="form-group">
