@@ -19,11 +19,11 @@
       </tr>
       <tr>
         <td>Deposit:</td>
-        <td>{{deposit}}</td>
+        <td>${{'{:.2f}'.format(deposit)}}</td>
       </tr>
       <tr>
         <td>Price/Day:</td>
-        <td>{{day_price}}</td>
+        <td>${{'{:.2f}'.format(day_price)}}</td>
       </tr>
       <tr>
         <td>Category:</td>

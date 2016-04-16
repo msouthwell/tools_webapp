@@ -37,12 +37,13 @@ def make_reservation():
 			deposit += reserved_tool['deposit']
 			rental_price += reserved_tool['day_price']
 
-		return template('reservation_summary.tpl', reserved_tools=reserved_tools, start_date=start_date, end_date=end_date, rental_price=rental_price, deposit=deposit)
+		return template('reservation_summary.tpl', reserved_tools=reserved_tools_field, start_date=start_date, end_date=end_date, rental_price=rental_price, deposit=deposit)
 
 	elif request.forms.get('Reserve Tools', '').strip():
 		reserved_tools = eval(reserved_tools_field)
 
 		if len(reserved_tools) < 1 or len(reserved_tools) > 50:
+			print('Trying to reserve ' + str(len(reserved_tools)) + ' tools.')
 			category = request.forms.get('category', '1')
 			tools = dbapi.get_available_tools(category, start_date, end_date)
 

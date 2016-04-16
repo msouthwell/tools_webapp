@@ -34,8 +34,8 @@
           <tr>
             <td>{{reserved_tool['tool_id']}}</td>
             <td>{{reserved_tool['short_description']}}</td>
-            <td>{{reserved_tool['deposit']}}</td>
-            <td>{{reserved_tool['day_price']}}</td>
+            <td>${{'{:.2f}'.format(float(reserved_tool['deposit']))}}</td>
+            <td>${{'{:.2f}'.format(float(reserved_tool['day_price']))}}</td>
             <td><a href="{{index}}" class="remove_tool">Remove</a></td>
           </tr>
         %end
@@ -54,7 +54,7 @@
         <label for="requested_tool" class="control-label">Tool:<em>*</em></label>
         <select class="form-control" name="requested_tool" required>
         %for tool in tools:
-          <option value="{{json.dumps(tool, default=make_reservation.decimal_default)}}">{{tool['tool_id']}} {{tool['short_description']}} ${{tool['day_price']}}</option>
+          <option value="{{json.dumps(tool, default=make_reservation.decimal_default)}}">{{tool['tool_id']}} {{tool['short_description']}} ${{'{:.2f}'.format(float(tool['day_price']))}}</option>
         %end
         </select>
       </div>

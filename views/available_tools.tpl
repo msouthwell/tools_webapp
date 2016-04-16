@@ -20,8 +20,8 @@
         <tr>
           <td>{{tool['tool_id']}}</td>
           <td>{{tool['short_description']}}</td>
-          <td>{{tool['deposit']}}</td>
-          <td>{{tool['day_price']}}</td>
+          <td>${{'{:.2f}'.format(float(tool['deposit']))}}</td>
+          <td>${{'{:.2f}'.format(float(tool['day_price']))}}</td>
           <td><a href="/view_tool/{{tool['tool_id']}}">Details</a></td>
         </tr>
       %end
