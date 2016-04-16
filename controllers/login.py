@@ -18,6 +18,8 @@ def login():
     password = request.forms.get('password', '').strip()
     user_type = request.forms.get('usertype', '').strip()
     
+    c = None
+
     try:
         connection = dbapi.connect()  # return db connection
 
@@ -51,4 +53,5 @@ def login():
     except pymysql.err.Error as e:
         return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
     finally:
-        c.close()
+        if c is not None:
+            c.close()
