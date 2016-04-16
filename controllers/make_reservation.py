@@ -23,7 +23,9 @@ def view_make_reservation():
 def make_reservation():
 	print("Posting to make_reservation.")
 	start_date = request.forms.get('start_date', '')
+	start_date_datetime = datetime.datetime.strptime(start_date, '%m/%d/%Y')
 	end_date = request.forms.get('end_date', '')
+	end_date_datetime = datetime.datetime.strptime(end_date, '%m/%d/%Y')
 	reserved_tools_field = request.forms.get('reserved_tools', '[]')
 
 	if request.forms.get('Calculate Total', '').strip():
@@ -45,14 +47,14 @@ def make_reservation():
 		if len(reserved_tools) < 1 or len(reserved_tools) > 50:
 			print('Trying to reserve ' + str(len(reserved_tools)) + ' tools.')
 			category = request.forms.get('category', '1')
-			tools = dbapi.get_available_tools(category, start_date, end_date)
+			tools = dbapi.get_available_tools(category, start_date_datetime, end_date_datetime)
 
 			return {'start_date':start_date, 'end_date':end_date, 'categories':dbapi.get_categories(), 'tools':tools, 'selected_category':category, 'reserved_tools':reserved_tools_field, 'message':'Only 1 to 50 tools can be reserved at a time.'}
 
-		no_longer_availables = dbapi.check_available_tools(reserved_tools, start_date, end_date)
+		no_longer_availables = dbapi.check_available_tools(reserved_tools, start_date_datetime, end_date_datetime)
 		if len(no_longer_availables) > 0:
 			category = request.forms.get('category', '1')
-			tools = dbapi.get_available_tools(category, start_date, end_date)
+			tools = dbapi.get_available_tools(category, start_date_datetime, end_date_datetime)
 
 			tool_message = ''
 			for no_longer_available in no_longer_availables:
@@ -62,8 +64,6 @@ def make_reservation():
 
 			return {'start_date':start_date, 'end_date':end_date, 'categories':dbapi.get_categories(), 'tools':tools, 'selected_category':category, 'reserved_tools':reserved_tools_field, 'message':'The following tools are no longer available: ' + tool_message}
 
-		start_date_value = datetime.datetime.strptime(start_date, '%m/%d/%Y')
-		end_date_value = datetime.datetime.strptime(end_date, '%m/%d/%Y')
 		customer_id = int(request.get_cookie('customer_id'))
 
 		try:
@@ -71,7 +71,7 @@ def make_reservation():
 
 			c = connection.cursor()
 
-			c.execute("INSERT INTO reservations(customer_id, start_date, end_date) VALUES(%s, %s, %s)", (customer_id, start_date_value, end_date_value))
+			c.execute("INSERT INTO reservations(customer_id, start_date, end_date) VALUES(%s, %s, %s)", (customer_id, start_date_datetime, end_date_datetime))
 			reservation_id = c.lastrowid
 
 			reserved_tools = eval(reserved_tools_field)
@@ -94,7 +94,7 @@ def make_reservation():
 			categories = dbapi.get_categories()
 			print("categories: " + str(categories))
 
-			tools = dbapi.get_available_tools(category, start_date, end_date)
+			tools = dbapi.get_available_tools(category, start_date_datetime, end_date_datetime)
 
 		except pymysql.err.Error as e:
 			return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
