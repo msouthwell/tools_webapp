@@ -22,19 +22,9 @@ def view_reservation(reservation_id):
         return data
 
 # there is likely a way simpler and more elegant way to do this, but it works for now
-def date_differance(start_date, end_date):
-    try:
-        connection = dbapi.connect()
-
-        c = connection.cursor()
-        dd = "SELECT DATEDIFF (%s, %s) AS Diffdate"
-        c.execute(dd, (str(end_date), str(start_date)))
-        datediff = c.fetchone()
-        c.close()
-    except pymysql.err.Error as e:
-        return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
-    else:
-        return datediff['Diffdate']
+def date_differance(start_date_datetime, end_date_datetime):
+    delta = end_date_datetime - start_date_datetime
+    return delta.days
 
 def reservation_tools(reservation_id):
     try:

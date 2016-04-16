@@ -5,6 +5,7 @@ import datetime
 import json
 import decimal
 from database import dbapi
+from controllers import utilities
 
 
 @route('/make_reservation', method=['GET'])
@@ -32,12 +33,14 @@ def make_reservation():
 		print ('Calculating total for: ' + reserved_tools_field)
 		reserved_tools = eval(reserved_tools_field)
 
+		days = utilities.date_differance(start_date_datetime, end_date_datetime)
+		print('Day count: ' + str(days))
 		deposit = 0.0
 		rental_price = 0.0
 
 		for reserved_tool in reserved_tools:
 			deposit += reserved_tool['deposit']
-			rental_price += reserved_tool['day_price']
+			rental_price += reserved_tool['day_price'] * days
 
 		return template('reservation_summary.tpl', reserved_tools=reserved_tools_field, start_date=start_date, end_date=end_date, rental_price=rental_price, deposit=deposit)
 
