@@ -41,7 +41,8 @@
       </tr>
 
       <tr>
-        <form class="form-horizontal" role="form" action="/sell" method="post">
+        <form class="form-horizontal" role="form" action="/sell" value="{{tool_id}}" method="post">
+        <td><input type="hidden" name="tool_id" value="{{tool_id}}"></td>
         <td><input class="form-control btn btn-primary" type="submit" name="Submit" value="submit"></td>
         </form>
       </tr>
