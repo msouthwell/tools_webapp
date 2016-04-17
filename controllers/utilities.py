@@ -32,13 +32,13 @@ def tool_accessories(tool_id):
     try:
         connection = dbapi.connect()
         c = connection.cursor()
-        sql = "SELECT * FROM tool_accessories NATURAL JOIN tools WHERE tool_id %s"
+        sql = "SELECT * FROM tool_accessories NATURAL JOIN tools WHERE tool_id  = %s"
         c.execute(sql, (tool_id))
         data = c.fetchall()
 
     except pymysql.err.Error as e:
-        return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
-    
+        return
+
     else:
         return data
 

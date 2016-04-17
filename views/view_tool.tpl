@@ -32,8 +32,9 @@
         <td>{{tool['category_id']}}</td>
       </tr>
       
-      %for accessory in tool['accessories']:
+      %for accessory in accessories:
         <tr>
+          <td>Accessory: </td>
           <td>{{accessory['description']}}</td>
         </tr>
       %end

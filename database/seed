@@ -15,7 +15,25 @@ VALUES ("bobb", "Bob", "Baker", "bobb");
 INSERT INTO clerks (login, first_name, last_name, password)
 VALUES ("cabc", "Cab", "Calloway", "cabc");
 
+INSERT INTO clerks (login, first_name, last_name, password)
+VALUES ("dond", "Don", "Douglas", "dond");
+
+INSERT INTO clerks (login, first_name, last_name, password)
+VALUES ("emae", "Ema", "East", "emae");
+
+INSERT INTO clerks (login, first_name, last_name, password)
+VALUES ("fayf", "Fay", "Franklin", "fayf");
+
 # Customers
+INSERT INTO customers (email, first_name, last_name, password, address, work_phone_cc, work_phone_number, home_phone_cc, home_phone_number)
+VALUES ("tom@tommorrow.com", "Tom", "Tommorrow", "tom", "Future Land", "1", "9194941000", "1", "9194942000");
+
+INSERT INTO customers (email, first_name, last_name, password, address, work_phone_cc, work_phone_number, home_phone_cc, home_phone_number)
+VALUES ("unicron@cybertron.com", "Unicron", "Primus", "unicaron", "The Planet Cybertron", "1", "9194943000", "1", "9194944000");
+
+INSERT INTO customers (email, first_name, last_name, password, address, work_phone_cc, work_phone_number, home_phone_cc, home_phone_number)
+VALUES ("vincent@vega.com", "Vincent", "Vega", "vincent", "The House of Wallace", "1", "9194945000", "1", "9194946000");
+
 INSERT INTO customers (email, first_name, last_name, password, address, work_phone_cc, work_phone_number, home_phone_cc, home_phone_number)
 VALUES ("xavier@xmen.com", "Charles", "Xavier", "xavier", "Professor Xavier's School for the Gifted", "1", "1234567890", "1", "2345678901");
 
@@ -51,12 +69,30 @@ VALUES("Planer", "Planes wood", 5.00, 50.00, 500.00, 3);
 INSERT INTO tools (short_description, full_description, deposit, day_price, original_price, category_id)
 VALUES("Sawzall", "Sawzall and accessories", 5.00, 50.00, 250.00, 3);
 
+INSERT INTO tools (short_description, full_description, deposit, day_price, original_price, category_id)
+VALUES("Wrench", "Normal Wrench", 1.00, 1.00, 1.00, 1);
+
+INSERT INTO tools (short_description, full_description, deposit, day_price, original_price, category_id)
+VALUES("Plumber Wrench", "An adjustable wrench", 1.00, 1.25, 1.25, 1);
+
+INSERT INTO tools (short_description, full_description, deposit, day_price, original_price, category_id)
+VALUES("Plumb Line", "Construction-grade plumb line", 101.00, 100.00, 1000.00, 2);
+
+INSERT INTO tools (short_description, full_description, deposit, day_price, original_price, category_id)
+VALUES("Lathe", "Can fashion weapons", 5.00, 50.00, 500.00, 3);
+
+INSERT INTO tools (short_description, full_description, deposit, day_price, original_price, category_id)
+VALUES("Belt Sander", "Powerful sander, needs paper", 5.00, 50.00, 250.00, 3);
+
 # TOOL ACCESSORIES
 INSERT INTO tool_accessories (tool_id, description)
 VALUES(5, "Mitre box");
 
 INSERT INTO tool_accessories (tool_id, description)
 VALUES(5, "Extra blades");
+
+INSERT INTO tool_accessories (tool_id, description)
+VALUES(10, "Sandpaper");
 
 # RESERVATIONS
 # Completed
