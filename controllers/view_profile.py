@@ -1,7 +1,7 @@
 from bottle import route, view, template, request
 import pymysql.cursors
 from database import dbapi
-
+import copy
 
 @route('/view_profile')
 @view('view_profile')
@@ -33,9 +33,30 @@ def view_profile(customer_id):
     c.execute(sql, customer_id)
     data = c.fetchall()
     c.close()
-    for d in data:
-        print(d)
 
-    output = template('view_profile', rows=data)
+    # Giving up on doing this in pure sql
+    formatted_data = []
+    formatted_ids = []
+
+    for row in data:
+        res_id = row['reservation_id']
+        new_dict = copy.deepcopy(row)
+        if res_id in formatted_ids:
+            continue
+        for row2 in data:
+            if row['reservation_id'] == row2['reservation_id'] and \
+                    row['tool_id'] != row2['tool_id'] and \
+                    row['reservation_id'] not in formatted_ids:
+
+                new_dict['day_price'] = new_dict['day_price'] + row2['day_price']
+                new_dict['deposit'] = new_dict['deposit'] + row2['deposit']
+
+                new_dict['short_description'] = new_dict['short_description'] + \
+                    ', ' + row2['short_description']
+
+        formatted_data.append(new_dict)
+        formatted_ids.append(res_id)
+
+    output = template('view_profile', rows=formatted_data)
 
     return output

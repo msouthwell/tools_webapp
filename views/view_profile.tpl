@@ -1,7 +1,8 @@
-%#template for viewing a customer profile % rebase('layout.tpl', title="Customer Profile")
+%#template for viewing a customer profile 
+% rebase('layout.tpl', title="Customer Profile")
 <div class="container">
     <h2>Customer Details</h2>
-    <hr/> % base = rows[0]
+    % base = rows[0]
     <div class="table-responsive">
         <table class="table">
             <tr>
