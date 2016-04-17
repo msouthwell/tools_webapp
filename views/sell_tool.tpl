@@ -40,9 +40,9 @@
         <td>{{sell_price}}</td>
       </tr>
 
+      <tr>
+        <td><input class="form-control btn btn-primary" type="submit" name="Submit" value="submit"></td>
+      </tr>
     </table>
-    <div>
-        <input class="form-control" type="submit" name="Submit" value="Submit">
-    </div>
   </div>
 </div>

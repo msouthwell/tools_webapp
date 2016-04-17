@@ -4,15 +4,16 @@ import pymysql.err
 from database import dbapi
 
 
-@route('/sell', method=['POST'])
+@route('/sell')
 @view('sell')
 def sell_tool_post():
-    tool_id = request.forms.get('tool_id', '').strip()
-    return sell_tool(tool_id)
+    return {'tool_id':''}
 
-@route('/sell_tool/<tool_id>')
+@route('/sell_tool', method=['POST'])
 @view('sell_tool')
-def sell_tool(tool_id):
+def sell_tool():
+    tool_id = int(request.forms.get('tool_id', ''))
+
     try:
         connection = dbapi.connect()  # return db connection
 
