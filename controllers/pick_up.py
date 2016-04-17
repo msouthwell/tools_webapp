@@ -5,7 +5,7 @@ import sys
 @route('/pick_up', method=['GET'])
 @view('reservation_select')
 def reservation_select():
-    if request.GET.get('submit','').strip():
+    if request.GET.get('Submit', '').strip():
         id = request.GET.get('id', '').strip()
         return pick_up(id)
     else:
@@ -20,10 +20,10 @@ def pick_up(reservation_id):
         tools = utilities.reservation_tools(reservation_id)
         data = reservation.copy()
         table = ""
-        deposit= 0
-        rental =0
+        deposit = 0
+        rental = 0
         for row in tools:
-            table= table+"<tr><td>{tool_id}</td><td>{short_description}</td></tr>".format(tool_id=row['tool_id'], short_description=row['short_description'])
+            table = table + "<tr><td>{tool_id}</td><td>{short_description}</td></tr>".format(tool_id=row['tool_id'], short_description=row['short_description'])
             deposit += row['deposit']
             rental += row['day_price']
         data['tool_table'] = table

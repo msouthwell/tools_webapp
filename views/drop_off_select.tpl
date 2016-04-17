@@ -4,7 +4,7 @@
 <div class="container">
   <h1>Enter Reservation Number</h1>
   <h4>{{message}}</h4>
-  <form class="form-horizontal" role="form" action="/pick_up" method="GET">
+  <form class="form-horizontal" role="form" action="/drop_off" method="GET">
       <div class="form-group">
         <label for="id" class="control-label col-sm-4">Reservation ID</label>
         <div class="col-sm-8">

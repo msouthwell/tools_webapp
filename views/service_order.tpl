@@ -39,8 +39,9 @@
   <script>
     $(document).ready(function(){
       $("input.date-control").datepicker({
-        startDate: '+0d',
-        todayBtn: true,
+        startDate: "+0d",
+        todayBtn: "linked",
+        orientation: "bottom auto",
         autoclose: true,
         todayHighlight: true
       });
