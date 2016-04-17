@@ -29,7 +29,7 @@
         <div class="form-group">
             <label for="password1" class="control-label col-sm-4">Password<em>*</em></label>
             <div class="col-sm-8">
-                <input type="password" class="form-control" maxlength="32" name="password1" id="password1" required>
+                <input type="password" class="form-control" maxlength="32" name="password" id="password" required>
             </div>
         </div>
         <div class="form-group">
