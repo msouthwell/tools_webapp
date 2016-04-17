@@ -15,7 +15,7 @@ def view_create_tool():
     except pymysql.err.Error as e:
         return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
 
-    return {'categories':categories, 'message':''}
+    return {'categories':categories, 'accessories':'[]', 'message':''}
 
 @route('/create_tool', method=['POST'])
 @view('create_tool')
@@ -25,7 +25,10 @@ def create_tool():
     deposit = request.forms.get('deposit', '').strip()
     day_price = request.forms.get('day_price', '').strip()
     original_price = request.forms.get('original_price', '').strip()
-    category_id = request.forms.get('category_id', '').strip()
+    # slightly funky, but have to split out the first value to be the int
+    category_id = int(request.forms.get('category_id', '').split()[0])
+    accessories_field = request.forms.get('accessories', '[]')
+    accessories = eval(accessories_field)
 
     try:
         connection = dbapi.connect()  # return db connection
@@ -36,13 +39,17 @@ def create_tool():
 
         c.execute(sql, (short_description, full_description, deposit, day_price, original_price, category_id))
         tool_id = c.lastrowid
+
+        for accessory in accessories:
+            c.execute("INSERT INTO tool_accessories(tool_id, description) VALUES(%s, %s)", (tool_id, accessory));
+
         connection.commit()
 
     except pymysql.err.IntegrityError:
         return template('create_tool.tpl', message="The tool already exists.")
     except pymysql.err.Error as e:
         return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
-    else:
+    finally:
         c.close()
-        #return template('view_profile.tpl', message='New customer profile created.', cust_id=cust_id)
-        redirect("/view_tool/%s" % tool_id)
+
+    redirect("/view_tool/%s" % tool_id)
