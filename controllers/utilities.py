@@ -26,6 +26,26 @@ def date_differance(start_date_datetime, end_date_datetime):
     delta = end_date_datetime - start_date_datetime
     return delta.days
 
+def tool_accessories(tool_id):
+    c = None
+
+    try:
+        connection = dbapi.connect()
+        c = connection.cursor()
+        sql = "SELECT * FROM tool_accessories NATURAL JOIN tools WHERE tool_id %s"
+        c.execute(sql, (tool_id))
+        data = c.fetchall()
+
+    except pymysql.err.Error as e:
+        return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
+    
+    else:
+        return data
+
+    finally:
+        if c is not None:
+            c.close()
+
 def reservation_tools(reservation_id):
     try:
         connection = dbapi.connect()

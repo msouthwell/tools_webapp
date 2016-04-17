@@ -1,34 +1,44 @@
-%#template for viewing a clerk profile
+%#template for viewing a tool
 
-% rebase('layout.tpl', title="Clerk Profile")
+% rebase('layout.tpl', title="View Tool")
 <div class="container">
   <h2>Tool Details</h2>
+  
+  %for tool in tools:
   <div class="table">
     <table class="table">
       <tr>
         <td>Tool ID:</td>
-        <td>{{tool_id}}</td>
+        <td>{{tool['tool_id']}}</td>
       </tr>
       <tr>
         <td>Description:</td>
-        <td>{{short_description}}</td>
+        <td>{{tool['short_description']}}</td>
       </tr>
       <tr>
         <td>Full Description:</td>
-        <td>{{full_description}}</td>
+        <td>{{tool['full_description']}}</td>
       </tr>
       <tr>
         <td>Deposit:</td>
-        <td>${{'{:.2f}'.format(deposit)}}</td>
+        <td>${{'{:.2f}'.format(tool['deposit'])}}</td>
       </tr>
       <tr>
         <td>Price/Day:</td>
-        <td>${{'{:.2f}'.format(day_price)}}</td>
+        <td>${{'{:.2f}'.format(tool['day_price'])}}</td>
       </tr>
       <tr>
         <td>Category:</td>
-        <td>{{category}}</td>
+        <td>{{tool['category_id']}}</td>
       </tr>
+      
+      %for accessory in tool['accessories']:
+        <tr>
+          <td>{{accessory['description']}}</td>
+        </tr>
+      %end
+
     </table>
   </div>
+  %end
 </div>
