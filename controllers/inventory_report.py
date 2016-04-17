@@ -1,6 +1,8 @@
 from bottle import route, view, template, request, response
 import pymysql.cursors
 import pymysql.err
+import datetime
+import calendar
 from database import dbapi
 
 @route('/inventory_report')
@@ -10,24 +12,36 @@ def generate_inventory_report():
         connection = dbapi.connect()
         c = connection.cursor()
 
-        c.execute("SELECT T.tool_id, T.short_description, \
-                  COALESCE( SUM( DATEDIFF(R.end_date, R.start_date)*T.day_price), 0) \
-                  AS rental_profit, \
-                  (T.original_price + COALESCE (SUM(SO.est_cost),0)) AS cost_of_tool, \
-                  (COALESCE( SUM( DATEDIFF(R.end_date, R.start_date)*T.day_price), 0) - \
-                  T.original_price + COALESCE (SUM(SO.est_cost),0)) AS total_profit \
-                  FROM \
-                  TOOLS AS T \
-                  LEFT JOIN RESERVATIONS_TOOLS AS RT ON T.tool_id=RT.tool_id \
-                  LEFT JOIN RESERVATIONS AS R ON R.reservation_id=RT.reservation_id \
-                  LEFT JOIN SERVICE_ORDERS AS SO ON SO.tool_id = T.tool_id \
-                  WHERE \
-                  NOT EXISTS ( \
-                  SELECT T.tool_id \
-                  FROM SELLS AS S \
-                  WHERE sale_date < NOW() AND T.tool_id=S.tool_id ) \
-                  GROUP BY T.tool_id \
-                  ORDER BY total_profit DESC" )
+        sql = "\
+                SELECT \
+                    t.tool_id, \
+                    t.short_description, \
+                    (t.day_price * COALESCE(rs.days_rented, 0)) AS rental_profit, \
+                    (t.original_price + COALESCE(so.service_order_cost, 0)) AS cost_of_tool, \
+                    ((t.day_price * COALESCE(rs.days_rented, 0)) - (t.original_price + COALESCE(so.service_order_cost, 0))) AS total_profit \
+                FROM \
+                    tools AS t \
+                        LEFT JOIN ( \
+                    SELECT tool_id, SUM(est_cost) service_order_cost \
+                    FROM service_orders \
+                    WHERE end_date < %s \
+                    GROUP BY tool_id) so ON t.tool_id = so.tool_id \
+                        LEFT JOIN ( \
+                    SELECT rt.tool_id, SUM(DATEDIFF(r.end_date, r.start_date)) days_rented \
+                    FROM reservations AS r JOIN reservations_tools AS rt ON r.reservation_id = rt.reservation_id \
+                    WHERE r.end_date < %s \
+                    GROUP BY rt.tool_id) rs ON t.tool_id = rs.tool_id \
+                ORDER BY total_profit DESC"
+
+        now = datetime.datetime.now()
+        first_day_of_month = now.replace(day=1)
+        last_day_of_month = now.replace(day=calendar.monthrange(now.year, now.month)[1])
+        print("now: {:%b, %d %Y}".format(now))
+        print("first: {:%b, %d %Y}".format(first_day_of_month))
+        print("last : {:%b, %d %Y}".format(last_day_of_month))
+
+        c.execute(sql, (last_day_of_month, last_day_of_month));
+        #print('inventory_report: ' + str(c._last_executed))
 
         rows = c.fetchall()
         print(rows)
@@ -36,4 +50,4 @@ def generate_inventory_report():
     finally:
         c.close()
 
-    return template('inventory_report', rows=rows)
+    return {'rows':rows}
