@@ -41,7 +41,9 @@
       </tr>
 
       <tr>
+        <form class="form-horizontal" role="form" action="/sell" method="post">
         <td><input class="form-control btn btn-primary" type="submit" name="Submit" value="submit"></td>
+        </form>
       </tr>
     </table>
   </div>

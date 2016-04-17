@@ -3,11 +3,10 @@ import pymysql.cursors
 import pymysql.err
 from database import dbapi
 
-
-@route('/sell')
+@route('/sell_tool', method=['GET'])
 @view('sell')
-def sell_tool_post():
-    return {'tool_id':''}
+def sell_tool_get():
+    return
 
 @route('/sell_tool', method=['POST'])
 @view('sell_tool')
