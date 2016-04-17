@@ -31,6 +31,7 @@ def generate_inventory_report():
                     FROM reservations AS r JOIN reservations_tools AS rt ON r.reservation_id = rt.reservation_id \
                     WHERE r.end_date < %s \
                     GROUP BY rt.tool_id) rs ON t.tool_id = rs.tool_id \
+                WHERE NOT EXISTS (SELECT * FROM sells WHERE t.tool_id = tool_id) \
                 ORDER BY total_profit DESC"
 
         now = datetime.datetime.now()
