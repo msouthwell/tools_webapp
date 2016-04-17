@@ -49,22 +49,32 @@
         </div>
     </div>
     <hr>
-    <form class="form-vertical" role="form" action="/view_tool" method="post">
+    <form class="form-horizontal" role="form" action="/view_tool" method="post">
         <div class="form-group">
-            <label for="tool_id" class="control-label">Tool #</label>
-            <input class="form-control" maxlength="255" name="tool_id" required>
+            <label for="tool_id" class="control-label col-sm-4">Tool #</label>
+            <div class="col-sm-8">
+                <input class="form-control" maxlength="255" name="tool_id" required>
+            </div>
         </div>
-        <input class="form-control btn btn-primary" type="submit" name="View Tool Details" value="View Details" />
+        <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-8">
+                <input class="form-control btn btn-primary" type="submit" name="View Tool Details" value="View Details" />
+            </div>
+        </div>
     </form>
     <hr>
-    <form class="form-vertical" role="form" action="/reservation_receipt/{{reservation_id}}" method="post">
+    <form class="form-horizontal" role="form" action="/reservation_receipt/{{reservation_id}}" method="post">
         <div class="form-group">
-            <label for="credit_card" class="control-label">Credit Card #<em>*</em></label>
-            <input class="form-control" maxlength="255" name="credit_card" required>
+            <label for="credit_card" class="control-label col-sm-4">Credit Card #<em>*</em></label>
+            <div class="col-sm-8">
+                <input class="form-control" maxlength="255" name="credit_card" required>
+            </div>
         </div>
         <div class="form-group">
-            <label for="expiration_date" class="control-label">Expiration Date<em>*</em></label>
-            <input class="form-control date-control" maxlength="10" name="expiration_date" required>
+            <label for="expiration_date" class="control-label col-sm-4">Expiration Date<em>*</em></label>
+            <div class="col-sm-8">
+                <input class="form-control date-control" maxlength="10" name="expiration_date" required>
+            </div>
         </div>
         <input class="form-control btn btn-primary" type="submit" name="complete" value="complete" />
     </form>

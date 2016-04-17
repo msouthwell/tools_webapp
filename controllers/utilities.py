@@ -32,12 +32,12 @@ def tool_accessories(tool_id):
     try:
         connection = dbapi.connect()
         c = connection.cursor()
-        sql = "SELECT * FROM tool_accessories NATURAL JOIN tools WHERE tool_id  = %s"
+        sql = "SELECT * FROM tool_accessories NATURAL JOIN tools WHERE tool_id = %s"
         c.execute(sql, (tool_id))
         data = c.fetchall()
 
     except pymysql.err.Error as e:
-        return
+        return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
 
     else:
         return data
@@ -118,22 +118,24 @@ def get_reservation_details(reservation_id):
                 CONCAT(c.first_name, ' ', c.last_name) AS customer_name, \
                 CONCAT(d.first_name, ' ', d.last_name) dropoff_clerk, \
                 CONCAT(p.first_name, ' ', p.last_name) pickup_clerk, \
-                t.tool_id, short_description, deposit, day_price \
+                t.tool_id, short_description, deposit, day_price, ta.description \
                 FROM \
                     customers c \
                         JOIN \
                     reservations r ON (c.customer_id = r.customer_id) \
                         JOIN \
                     reservations_tools rt ON (r.reservation_id = rt.reservation_id) \
-                        LEFT OUTER JOIN \
+                        JOIN \
                     tools t ON (t.tool_id = rt.tool_id) \
+                        LEFT OUTER JOIN \
+                    tool_accessories ta ON (t.tool_id = ta.tool_id) \
                         LEFT OUTER JOIN \
                     clerks d ON (r.clerk_id_dropoff = d.clerk_id) \
                         LEFT OUTER JOIN \
                     clerks p ON (r.clerk_id_pickup = p.clerk_id) \
                 WHERE \
                     r.reservation_id = %s \
-                ORDER BY r.start_date , r.reservation_id", (reservation_id))
+                ORDER BY r.start_date , r.reservation_id, t.tool_id", (reservation_id))
         rows = c.fetchall()
     except pymysql.err.Error as e:
         return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
@@ -152,22 +154,24 @@ def get_reservation_details_by_customer(customer_id):
                 CONCAT(c.first_name, ' ', c.last_name) AS customer_name, \
                 CONCAT(d.first_name, ' ', d.last_name) dropoff_clerk, \
                 CONCAT(p.first_name, ' ', p.last_name) pickup_clerk, \
-                t.tool_id, short_description, deposit, day_price \
+                t.tool_id, short_description, deposit, day_price, ta.description \
                 FROM \
                     customers c \
                         JOIN \
                     reservations r ON (c.customer_id = r.customer_id) \
                         JOIN \
                     reservations_tools rt ON (r.reservation_id = rt.reservation_id) \
-                        LEFT OUTER JOIN \
+                        JOIN \
                     tools t ON (t.tool_id = rt.tool_id) \
+                        LEFT OUTER JOIN \
+                    tool_accessories ta ON (t.tool_id = ta.tool_id) \
                         LEFT OUTER JOIN \
                     clerks d ON (r.clerk_id_dropoff = d.clerk_id) \
                         LEFT OUTER JOIN \
                     clerks p ON (r.clerk_id_pickup = p.clerk_id) \
                 WHERE \
                     c.customer_id = %s \
-                ORDER BY r.start_date , r.reservation_id", (customer_id))
+                ORDER BY r.start_date , r.reservation_id, t.tool_id", (customer_id))
         rows = c.fetchall()
     except pymysql.err.Error as e:
         return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
@@ -182,7 +186,9 @@ def get_reservation_data(rows):
     reservations = []
 
     last_reservation_id = -1
+    last_tool_id = -1
     reservation = None
+    tool = None
     for row in rows:
         if (row['reservation_id'] != last_reservation_id):
             # bookkeeping for a new reservation; only done once for a new reservation
@@ -206,18 +212,26 @@ def get_reservation_data(rows):
             reservation['total_rental'] = 0.0
             reservation['days'] = date_differance(reservation['start_date'], reservation['end_date'])
             reservation['tools'] = []
+            last_tool_id = -1
 
-        # each row has a tool, so add the tool to the current list of tools
-        tool = {}
-        reservation['tools'].append(tool)
-        tool['tool_id'] = row['tool_id']
-        tool['short_description'] = row['short_description']
-        tool['deposit'] = row['deposit']
-        tool['day_price'] = row['day_price']
+        if row['tool_id'] != last_tool_id:
+            # add the tool to the current list of tools
+            tool = {}
+            reservation['tools'].append(tool)
+            tool['tool_id'] = row['tool_id']
+            tool['short_description'] = row['short_description']
+            tool['deposit'] = row['deposit']
+            tool['day_price'] = row['day_price']
+            tool['accessories'] = []
 
-        # update the calculated data
-        reservation['total_deposit'] += float(tool['deposit'])
-        reservation['total_rental'] += float(tool['day_price']) * reservation['days']
+            last_tool_id = tool['tool_id']
+
+            # update the calculated data
+            reservation['total_deposit'] += float(tool['deposit'])
+            reservation['total_rental'] += float(tool['day_price']) * reservation['days']
+
+        if row['description'] is not None:
+            tool['accessories'].append(row['description'])
 
     print("Returning reservations: " + str(reservations))
     return reservations
