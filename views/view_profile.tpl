@@ -1,4 +1,4 @@
-%#template for viewing a customer profile 
+%#template for viewing a customer profile
 % rebase('layout.tpl', title="Customer Profile")
 <div class="container">
     <h2>Customer Details</h2>
@@ -42,33 +42,36 @@
     <!-- TODO iterate over this list -->
     <h3>Reservations</h3>
     <div class="table-responsive">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Reservation Number</th>
-                    <th>Tools</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Rental Price</th>
-                    <th>Deposit</th>
-                    <th>Pick Up Clerk</th>
-                    <th>Drop Off Clerk</th>
-                </tr>
-            </thead>
-            %for row in rows:
-
-            <tr>
-                <td>{{row['reservation_id']}}</td>
-                <td>{{row['short_description']}}</td>
-                <td>{{row['start_date']}}</td>
-                <td>{{row['end_date']}}</td>
-                <!-- What is the price? Day Price or a calculation? -->
-                <td>${{row['day_price']}}</td>
-                <td>${{row['deposit']}}</td>
-                <td>{{row['p_name']}}</td>
-                <td>{{row['d_name']}}</td>
-            </tr>
-            %end
-        </table>
+        %if 'reservation_id' not in base:
+        <h4>No reservations</h4>
+        %else:
+          <table class="table">
+              <thead>
+                  <tr>
+                      <th>Reservation Number</th>
+                      <th>Tools</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                      <th>Rental Price</th>
+                      <th>Deposit</th>
+                      <th>Pick Up Clerk</th>
+                      <th>Drop Off Clerk</th>
+                  </tr>
+              </thead>
+              %for row in rows:
+              <tr>
+                  <td>{{row['reservation_id']}}</td>
+                  <td>{{row['short_description']}}</td>
+                  <td>{{row['start_date']}}</td>
+                  <td>{{row['end_date']}}</td>
+                  <!-- What is the price? Day Price or a calculation? -->
+                  <td>${{row['day_price']}}</td>
+                  <td>${{row['deposit']}}</td>
+                  <td>{{row['p_name']}}</td>
+                  <td>{{row['d_name']}}</td>
+              </tr>
+              %end
+            </table>
+          %end
     </div>
 </div>
