@@ -47,9 +47,9 @@
       </table>
       <hr>
       <div class="form-group">
-        <label for="category" class="control-label col-sm-4">Type of Tool<em>*</em></label>
+        <label for="category" class="control-label col-sm-4">Type of Tool</label>
         <div class="col-sm-8">
-          <select class="form-control" name="category" required>
+          <select class="form-control" name="category">
           %for category in categories:
             <option value="{{category['category_id']}}" {{!'selected="selected"' if str(category['category_id']) == selected_category else ""}}>{{category['category']}}</option>
           %end
@@ -57,9 +57,9 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="requested_tool" class="control-label col-sm-4">Tool<em>*</em></label>
+        <label for="requested_tool" class="control-label col-sm-4">Tool</label>
         <div class="col-sm-8">
-          <select class="form-control" name="requested_tool" required>
+          <select class="form-control" name="requested_tool">
           %for tool in tools:
             <option value="{{json.dumps(tool, default=make_reservation.decimal_default)}}">{{tool['tool_id']}} {{tool['short_description']}} ${{'{:.2f}'.format(float(tool['day_price']))}}</option>
           %end

@@ -28,10 +28,10 @@ def make_reservation():
 	end_date = request.forms.get('end_date', '')
 	end_date_datetime = datetime.datetime.strptime(end_date, '%m/%d/%Y')
 	reserved_tools_field = request.forms.get('reserved_tools', '[]')
+	reserved_tools = eval(reserved_tools_field)
 
 	if request.forms.get('Calculate Total', '').strip():
 		print ('Calculating total for: ' + reserved_tools_field)
-		reserved_tools = eval(reserved_tools_field)
 
 		days = utilities.date_differance(start_date_datetime, end_date_datetime)
 		print('Day count: ' + str(days))
@@ -45,8 +45,6 @@ def make_reservation():
 		return template('reservation_summary.tpl', reserved_tools=reserved_tools_field, start_date=start_date, end_date=end_date, rental_price=rental_price, deposit=deposit)
 
 	elif request.forms.get('Reserve Tools', '').strip():
-		reserved_tools = eval(reserved_tools_field)
-
 		if len(reserved_tools) < 1 or len(reserved_tools) > 50:
 			print('Trying to reserve ' + str(len(reserved_tools)) + ' tools.')
 			category = request.forms.get('category', '1')
@@ -98,11 +96,22 @@ def make_reservation():
 			print("categories: " + str(categories))
 
 			tools = dbapi.get_available_tools(category, start_date_datetime, end_date_datetime)
+			print("available tools: " + str(tools))
+
+			# removed already reserved tools from returned list
+			tools = tuple(x for x in tools if not tool_in_list(x, reserved_tools))
+			print('return tools: ' + str(tools))
 
 		except pymysql.err.Error as e:
 			return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
 
 		return {'start_date':start_date, 'end_date':end_date, 'categories':categories, 'tools':tools, 'selected_category':category, 'reserved_tools':reserved_tools_field, 'message':''}
+
+def tool_in_list(search_tool, tools):
+	for tool in tools:
+		if search_tool['tool_id'] == tool['tool_id']:
+			return True
+	return False
 
 def decimal_default(obj):
 	if isinstance(obj, decimal.Decimal):
