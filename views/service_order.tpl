@@ -7,7 +7,7 @@
   <hr/>
   <form class="form-horizontal" role="form" action="/service_order" method="post">
     <div class="form-group">
-      <label for="email" class="control-label col-sm-4">Took ID<em>*</em></label>
+      <label for="email" class="control-label col-sm-4">Tool ID<em>*</em></label>
       <div class="col-sm-8">
         <input type="text" class="form-control" maxlength="255" name="tool_id" value="{{tool_id}}" autofocus required/>
       </div>
