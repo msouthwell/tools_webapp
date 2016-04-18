@@ -135,7 +135,7 @@ def get_reservation_details(reservation_id):
                     clerks p ON (r.clerk_id_pickup = p.clerk_id) \
                 WHERE \
                     r.reservation_id = %s \
-                ORDER BY r.start_date , r.reservation_id, t.tool_id", (reservation_id))
+                ORDER BY r.start_date DESC, r.reservation_id, t.tool_id", (reservation_id))
         rows = c.fetchall()
     except pymysql.err.Error as e:
         return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))
@@ -171,7 +171,7 @@ def get_reservation_details_by_customer(customer_id):
                     clerks p ON (r.clerk_id_pickup = p.clerk_id) \
                 WHERE \
                     c.customer_id = %s \
-                ORDER BY r.start_date , r.reservation_id, t.tool_id", (customer_id))
+                ORDER BY r.start_date DESC, r.reservation_id, t.tool_id", (customer_id))
         rows = c.fetchall()
     except pymysql.err.Error as e:
         return template('error.tpl', message='An error occurred. Error {!r}, errno is {}'.format(e, e.args[0]))

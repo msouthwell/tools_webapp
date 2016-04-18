@@ -47,12 +47,12 @@
         <div class="table">
             <table class="table">
                 <tr>
-                    <td>Deposit Held:</td>
-                    <td>{{deposit_required}}</td>
+                    <td>Rental Cost:</td>
+                    <td>${{'{:.2f}'.format(float(estimated_cost))}}</td>
                 </tr>
                 <tr>
-                    <td>Rental Cost:</td>
-                    <td>{{estimated_cost}}</td>
+                    <td>Deposit Held:</td>
+                    <td>${{'{:.2f}'.format(float(deposit_required))}}</td>
                 </tr>
             </table>
         </div>

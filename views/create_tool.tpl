@@ -19,15 +19,15 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="deposit" class="control-label col-sm-4">Deposit<em>*</em></label>
-            <div class="col-sm-8">
-                <input type="text" class="form-control" maxlength="8" name="deposit" required>
-            </div>
-        </div>
-        <div class="form-group">
             <label for="day_price" class="control-label col-sm-4">Day Price<em>*</em></label>
             <div class="col-sm-8">
                 <input type="text" class="form-control" maxlength="8" name="day_price" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="deposit" class="control-label col-sm-4">Deposit<em>*</em></label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" maxlength="8" name="deposit" required>
             </div>
         </div>
         <div class="form-group">

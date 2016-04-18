@@ -1,6 +1,5 @@
 %#template for picking up a reservation
 
-
 % rebase('layout.tpl', title="Pick Up Reservation")
 <div class="container">
     <div class="row">
@@ -9,28 +8,41 @@
             <table class="table">
                 <tr>
                     <td>Reservation Number:</td>
-                    <td>{{reservation_id}}</td>
+                    <td>{{reservation['reservation_id']}}</td>
                 </tr>
                 <tr>
                     <td>Customer ID:</td>
-                    <td>{{customer_id}}</td>
+                    <td>{{reservation['customer_id']}}</td>
                 </tr>
                 <tr>
                     <td>Start Date:</td>
-                    <td>{{start_date}}</td>
+                    <td>{{reservation['start_date']}}</td>
                 </tr>
                 <tr>
                     <td>End Date:</td>
-                    <td>{{end_date}}</td>
+                    <td>{{reservation['end_date']}}</td>
                 </tr>
             </table>
         </div>
     </div>
     <div class="row">
         <h2>Tool Details</h2>
-        <div class="table">
+        <div class="table-responsive">
             <table class="table">
-                {{!tool_table}}
+                <thead>
+                    <tr>
+                        <th>Tool ID</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                %for tool in reservation['tools']:
+                    <tr>
+                        <td>{{tool['tool_id']}}</td>
+                        <td><a href="/view_tool/{{tool['tool_id']}}">{{tool['short_description']}}</a></td>
+                    </tr>
+                %end
+                </tbody>
             </table>
         </div>
     </div>
@@ -38,12 +50,12 @@
         <div class="table">
             <table class="table">
                 <tr>
-                    <td>Deposit Required:</td>
-                    <td>{{deposit_required}}</td>
+                    <td>Estimated Cost:</td>
+                    <td>${{'{:.2f}'.format(reservation['total_rental'])}}</td>
                 </tr>
                 <tr>
-                    <td>Estimated Cost:</td>
-                    <td>{{estimated_cost}}</td>
+                    <td>Deposit Required:</td>
+                    <td>${{'{:.2f}'.format(reservation['total_deposit'])}}</td>
                 </tr>
             </table>
         </div>
@@ -63,7 +75,7 @@
         </div>
     </form>
     <hr>
-    <form class="form-horizontal" role="form" action="/reservation_receipt/{{reservation_id}}" method="post">
+    <form class="form-horizontal" role="form" action="/reservation_receipt/{{reservation['reservation_id']}}" method="post">
         <div class="form-group">
             <label for="credit_card" class="control-label col-sm-4">Credit Card #<em>*</em></label>
             <div class="col-sm-8">

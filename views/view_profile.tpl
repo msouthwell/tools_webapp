@@ -2,49 +2,35 @@
 % rebase('layout.tpl', title="Customer Profile")
 <div class="container">
     <h2>Customer Details</h2>
-    % base = rows[0]
     <div class="table-responsive">
         <table class="table">
             <tr>
-                <td>First Name:</td>
-                <td>{{base['first_name']}}</td>
-            </tr>
-            <tr>
-                <td>Last Name:</td>
-                <td>{{base['last_name']}}</td>
+                <td>Name:</td>
+                <td>{{customer['customer_name']}}</td>
             </tr>
             <tr>
                 <td>Email:</td>
-                <td>{{base['email']}}</td>
+                <td>{{customer['email']}}</td>
             </tr>
             <tr>
                 <td>Address:</td>
-                <td>{{base['address']}}</td>
-            </tr>
-            <tr>
-                <td>Work Phone Country Code:</td>
-                <td>{{base['work_phone_cc']}}</td>
+                <td>{{customer['address']}}</td>
             </tr>
             <tr>
                 <td>Work Phone:</td>
-                <td>{{base['work_phone_number']}}</td>
+                <td>{{customer['work_phone']}}</td>
             </tr>
             <tr>
-                <td>Home Phone Country Code:</td>
-                <td>{{base['home_phone_cc']}}</td>
-            </tr>
-            <tr>
-                <td>Home Phone Country Code:</td>
-                <td>{{base['home_phone_number']}}</td>
+                <td>Home Phone:</td>
+                <td>{{customer['home_phone']}}</td>
             </tr>
         </table>
     </div>
-    <!-- TODO iterate over this list -->
     <h3>Reservations</h3>
-    <div class="table-responsive">
-        %if 'reservation_id' not in base:
-        <h4>No reservations</h4>
-        %else:
+    %if len(reservations) == 0:
+    <h4>No reservations</h4>
+    %else:
+        <div class="table-responsive">
           <table class="table">
               <thead>
                   <tr>
@@ -52,26 +38,29 @@
                       <th>Tools</th>
                       <th>Start Date</th>
                       <th>End Date</th>
-                      <th>Rental Price</th>
-                      <th>Deposit</th>
+                      <th>Total Rental Price</th>
+                      <th>Total Deposit</th>
                       <th>Pick Up Clerk</th>
                       <th>Drop Off Clerk</th>
                   </tr>
               </thead>
-              %for row in rows:
+              %for reservation in reservations:
               <tr>
-                  <td>{{row['reservation_id']}}</td>
-                  <td>{{row['short_description']}}</td>
-                  <td>{{row['start_date']}}</td>
-                  <td>{{row['end_date']}}</td>
-                  <!-- What is the price? Day Price or a calculation? -->
-                  <td>${{row['day_price']}}</td>
-                  <td>${{row['deposit']}}</td>
-                  <td>{{row['p_name']}}</td>
-                  <td>{{row['d_name']}}</td>
+                  <td><a href="/view_reservation/{{reservation['reservation_id']}}">{{reservation['reservation_id']}}</a></td>
+                  <td>
+                  %for tool in reservation['tools']:
+                    <a href="/view_tool/{{tool['tool_id']}}">{{tool['short_description']}}</a><br/>
+                  %end
+                  </td>
+                  <td>{{reservation['start_date']}}</td>
+                  <td>{{reservation['end_date']}}</td>
+                  <td>${{'{:.2f}'.format(float(reservation['total_rental']))}}</td>
+                  <td>${{'{:.2f}'.format(float(reservation['total_deposit']))}}</td>
+                  <td>{{!reservation['pickup_clerk'] if reservation['pickup_clerk'] is not None else ""}}</td>
+                  <td>{{!reservation['dropoff_clerk'] if reservation['dropoff_clerk'] is not None else ""}}</td>
               </tr>
               %end
-            </table>
-          %end
-    </div>
+          </table>
+        </div>
+    %end
 </div>

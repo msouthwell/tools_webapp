@@ -18,12 +18,12 @@
         <td>{{full_description}}</td>
       </tr>
       <tr>
-        <td>Deposit:</td>
-        <td>{{deposit}}</td>
+        <td>Price/Day:</td>
+        <td>${{'{:.2f}'.format(day_price)}}</td>
       </tr>
       <tr>
-        <td>Price/Day:</td>
-        <td>{{day_price}}</td>
+        <td>Deposit:</td>
+        <td>${{'{:.2f}'.format(deposit)}}</td>
       </tr>
       <tr>
         <td>Category:</td>
@@ -32,12 +32,12 @@
 
       <tr>
         <td>Original Price:</td>
-        <td>{{original_price}}</td>
+        <td>${{'{:.2f}'.format(original_price)}}</td>
       </tr>
       
       <tr>
         <td>Sell Price:</td>
-        <td>{{sell_price}}</td>
+        <td>${{'{:.2f}'.format(sell_price)}}</td>
       </tr>
 
       <tr>

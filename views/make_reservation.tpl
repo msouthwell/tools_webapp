@@ -28,8 +28,8 @@
           <tr>
             <th>Tool ID</th>
             <th>Description</th>
-            <th>Deposit</th>
             <th>Price/Day</th>
+            <th>Deposit</th>
             <th>Links</th>
           </tr>
         </thead>
@@ -37,9 +37,9 @@
         %for index, reserved_tool in enumerate(eval(reserved_tools)):
           <tr>
             <td>{{reserved_tool['tool_id']}}</td>
-            <td>{{reserved_tool['short_description']}}</td>
-            <td>${{'{:.2f}'.format(float(reserved_tool['deposit']))}}</td>
+            <td><a href="/view_tool/{{reserved_tool['tool_id']}}">{{reserved_tool['short_description']}}</a></td>
             <td>${{'{:.2f}'.format(float(reserved_tool['day_price']))}}</td>
+            <td>${{'{:.2f}'.format(float(reserved_tool['deposit']))}}</td>
             <td><a href="{{index}}" class="remove_tool">Remove</a></td>
           </tr>
         %end

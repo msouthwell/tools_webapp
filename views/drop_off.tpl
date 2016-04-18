@@ -56,15 +56,15 @@
             <table class="table">
                 <tr>
                     <td>Rental Cost:</td>
-                    <td>$ {{rental_cost}}</td>
+                    <td>${{'{:.2f}'.format(rental_cost)}}</td>
                 </tr>
                 <tr>
                     <td>Deposit Held:</td>
-                    <td>- $ {{deposit_held}}</td>
+                    <td>- ${{'{:.2f}'.format(deposit_held)}}</td>
                 </tr>
                 <tr>
                     <td>Total:</td>
-                    <td>$ {{remaining_cost}}</td>
+                    <td>${{'{:.2f}'.format(remaining_cost)}}</td>
                 </tr>
             </table>
         </div>

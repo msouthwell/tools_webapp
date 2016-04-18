@@ -20,25 +20,27 @@
         <td>{{tool['full_description']}}</td>
       </tr>
       <tr>
-        <td>Deposit:</td>
-        <td>${{'{:.2f}'.format(tool['deposit'])}}</td>
-      </tr>
-      <tr>
         <td>Price/Day:</td>
         <td>${{'{:.2f}'.format(tool['day_price'])}}</td>
       </tr>
       <tr>
-        <td>Category:</td>
-        <td>{{tool['category_id']}}</td>
+        <td>Deposit:</td>
+        <td>${{'{:.2f}'.format(tool['deposit'])}}</td>
       </tr>
-      
-      %for accessory in accessories:
-        <tr>
-          <td>Accessory: </td>
-          <td>{{accessory['description']}}</td>
-        </tr>
+      <tr>
+        <td>Category:</td>
+        <td>{{tool['category']}}</td>
+      </tr>
+      %if tool['has_accessories'] == 1:
+      <tr>
+        <td>Accessory: </td>
+        <td>
+        %for accessory in accessories:
+          {{accessory['description']}}<br/>
+        %end
+        </td>
+      </tr>
       %end
-
     </table>
   </div>
   %end
