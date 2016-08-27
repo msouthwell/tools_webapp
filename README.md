@@ -1,5 +1,12 @@
 # Handyman Tools
-Team Corn on the Cobb
+A web app project for Georgia Tech's Advanced Databases course.  Working in a team of four people, the purpose of the project was to take a series of use-cases to design the database schema, queries, documentation, and finally implement a web-app for handling the inventory of a hardware store.
+
+## Technology Stack
+- Bottle framework
+- Python
+- SQL
+- Bootstrap
+- jQuery
 
 ## Getting started
 
